@@ -1046,10 +1046,18 @@ class Component extends DCLogic {
     const refs = { biz:this.bizFormRef, event:this.eventFormRef, note:this.noteFormRef };
     const form = (refs[which] || {}).current;
     if (form) {
-      const fd = new FormData(form);
-      if (fd.get("_hp")) { this.setState(which === "biz" ? { sentBiz:true } : which === "event" ? { sentEvent:true } : { sentNote:true }); return; }
-      fd.delete("_hp");
-      fd.append("form_type", { biz:"Business listing", event:"Event submission", note:"Community message" }[which]);
+      const raw = new FormData(form);
+      if (raw.get("_hp")) { this.setState(which === "biz" ? { sentBiz:true } : which === "event" ? { sentEvent:true } : { sentNote:true }); return; }
+      /* Forminit requires fi-{blockType}-{name} field names — translate everything */
+      const fd = new FormData();
+      raw.forEach((v, k) => {
+        if (k === "_hp") return;
+        if (k === "fi-file-logo") { if (v && v.size) fd.append(k, v); return; }
+        if (typeof v === "string" && v.trim() === "") return;
+        if (k === "email") fd.append("fi-sender-email", v);
+        else fd.append("fi-text-" + k, v);
+      });
+      fd.append("fi-text-form_type", { biz:"Business listing", event:"Event submission", note:"Community message" }[which]);
       console.log("[wearelakecounty] " + which + " submission → Forminit");
       fetch("https://forminit.com/f/xfgogqzx7ly", { method:"POST", body:fd, headers:{ "Accept":"application/json" } })
         .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); console.log("[wearelakecounty] delivered"); })
