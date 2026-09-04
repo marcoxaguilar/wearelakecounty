@@ -114,12 +114,14 @@
     <div>
       <span style="display:inline-block;font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.18em;background:#16151A;color:#FFF6EC;border-radius:999px;padding:7px 13px">{{ spot.badge }}</span>
       <p style="margin:16px 0 0;font-family:'Anton',sans-serif;font-size:clamp(38px,10vw,84px);line-height:.9;letter-spacing:-.02em;text-transform:uppercase;text-wrap:balance">{{ spot.name }}</p>
-      <p style="margin:18px 0 0;font-size:15px;font-weight:800;letter-spacing:.02em;opacity:.6">{{ spot.at }} · {{ spot.cat }}</p>
+      <p style="margin:18px 0 0;font-size:15px;font-weight:800;letter-spacing:.02em;opacity:.6">{{ spot.sub }}</p>
       <p style="margin:14px 0 0;max-width:520px;font-size:16px;line-height:1.55;text-wrap:pretty;opacity:.88">{{ spot.sells }}</p>
       <p style="margin:14px 0 0;max-width:520px;font-size:13px;line-height:1.5;opacity:.6">{{ spot.meta }}</p>
       <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:22px">
         <a href="#vendor" onClick="{{ spot.onOpen }}" style="min-height:52px;display:grid;place-items:center;padding:0 22px;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;background:#fff;color:#16151A;border:3px solid #16151A;border-radius:14px;box-shadow:5px 5px 0 #16151A;transition:transform 150ms" style-hover="transform:translate(-2px,-2px)">{{ spot.cta }}</a>
-        <a href="{{ spot.igUrl }}" target="_blank" rel="noopener" style="min-height:52px;display:grid;place-items:center;padding:0 22px;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;background:#16151A;color:#FFF6EC;border:3px solid #16151A;border-radius:14px;transition:transform 150ms" style-hover="transform:translate(-2px,-2px);color:#FFF6EC">{{ c.ig }}</a>
+        <sc-if value="{{ spot.ig }}" hint-placeholder-val="{{ true }}">
+          <a href="{{ spot.igUrl }}" target="_blank" rel="noopener" style="min-height:52px;display:grid;place-items:center;padding:0 22px;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;background:#16151A;color:#FFF6EC;border:3px solid #16151A;border-radius:14px;transition:transform 150ms" style-hover="transform:translate(-2px,-2px);color:#FFF6EC">{{ c.ig }}</a>
+        </sc-if>
         <sc-if value="{{ spot.web }}" hint-placeholder-val="{{ true }}">
           <a href="{{ spot.webUrl }}" target="_blank" rel="noopener" style="min-height:52px;display:grid;place-items:center;padding:0 22px;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;background:transparent;color:#16151A;border:3px solid #16151A;border-radius:14px;transition:transform 150ms" style-hover="transform:translate(-2px,-2px)">{{ c.web }}</a>
         </sc-if>
@@ -129,8 +131,11 @@
       </div>
     </div>
     <div style="{{ spotTileWrapStyle }}">
-      <div style="width:180px;height:180px;border:3px solid #16151A;border-radius:26px;display:grid;place-items:center;background:{{ spot.color }};box-shadow:9px 9px 0 #16151A;transform:rotate(-3deg)">
+      <div style="position:relative;overflow:hidden;width:180px;height:180px;border:3px solid #16151A;border-radius:26px;display:grid;place-items:center;background:{{ spot.color }};box-shadow:9px 9px 0 #16151A;transform:rotate(-3deg)">
         <span style="font-family:'Anton',sans-serif;font-size:76px;color:#16151A;opacity:.82">{{ spot.initials }}</span>
+        <sc-if value="{{ spot.hasLogo }}" hint-placeholder-val="{{ false }}">
+          <div role="img" aria-label="{{ spot.name }} logo" style="position:absolute;inset:0;background-color:#fff;background-image:url('{{ spot.logo }}');background-size:82%;background-position:center;background-repeat:no-repeat"></div>
+        </sc-if>
       </div>
     </div>
   </div>
@@ -153,6 +158,9 @@
         <div style="position:relative;aspect-ratio:4/3;border-bottom:3px solid #16151A">
           <div style="position:absolute;inset:0;display:grid;place-items:center;background:{{ v.color }}">
             <span style="font-family:'Anton',sans-serif;font-size:52px;color:#16151A;opacity:.82;letter-spacing:.02em">{{ v.initials }}</span>
+            <sc-if value="{{ v.hasLogo }}" hint-placeholder-val="{{ false }}">
+              <div role="img" aria-label="{{ v.name }} logo" style="position:absolute;inset:0;background-color:#fff;background-image:url('{{ v.logo }}');background-size:80%;background-position:center;background-repeat:no-repeat"></div>
+            </sc-if>
           </div>
           <span style="position:absolute;left:10px;bottom:10px;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;background:#fff;border:2px solid #16151A;border-radius:999px;padding:4px 9px">{{ v.cat }}</span>
         </div>
@@ -319,8 +327,11 @@
         <button type="button" onClick="{{ toggleLang }}" style="font-family:'Archivo',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#fff;background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.6);border-radius:999px;padding:8px 13px;cursor:pointer">{{ c.lang }}</button>
       </div>
       <div style="display:flex;align-items:flex-end;gap:16px;margin-top:26px">
-        <div style="width:104px;height:104px;flex:none;border:3px solid #16151A;border-radius:22px;display:grid;place-items:center;background:#FFF6EC;box-shadow:6px 6px 0 #16151A">
+        <div style="position:relative;overflow:hidden;width:104px;height:104px;flex:none;border:3px solid #16151A;border-radius:22px;display:grid;place-items:center;background:#FFF6EC;box-shadow:6px 6px 0 #16151A">
           <span style="font-family:'Anton',sans-serif;font-size:44px;color:#16151A">{{ vendor.initials }}</span>
+          <sc-if value="{{ vendor.hasLogo }}" hint-placeholder-val="{{ false }}">
+            <div role="img" aria-label="{{ vendor.name }} logo" style="position:absolute;inset:0;background-color:#fff;background-image:url('{{ vendor.logo }}');background-size:84%;background-position:center;background-repeat:no-repeat"></div>
+          </sc-if>
         </div>
         <div style="min-width:0">
           <h1 style="margin:0;font-family:'Anton',sans-serif;font-size:clamp(30px,8vw,58px);line-height:.95;letter-spacing:-.02em;color:#fff;word-break:break-word">{{ vendor.at }}</h1>
@@ -810,6 +821,19 @@ const T = {
 };
 
 const SEED = [
+  { handle:"bakd_bylucy", owner:"Andreina Banales", name:"Bak'd by Lucy", cat:"party", logo:"./logos/bakd-by-lucy.png",
+    sells:"Custom cakes & desserts, Mobile Cake/Dessert Bar",
+    sells_es:"Pasteles y postres personalizados, barra móvil de pasteles y postres",
+    area:"", area_es:"", phone:"2242005261", hours:"", hours_es:"" },
+  { handle:"", owner:"Alberto Ramirez", name:"Bert's Pizza Pub & Gaming", cat:"food", logo:"./logos/berts-pizza.png", web:"https://bertspizzapubandgaming.com",
+    sells:"Pizzas, Italian Beef, Burgers, Wings & more!",
+    sells_es:"Pizzas, Italian beef, hamburguesas, alitas ¡y más!",
+    area:"", area_es:"", phone:"8476729000", hours:"", hours_es:"" },
+  { handle:"", owner:"Jose Lopez", name:"JL Repairs LLC", cat:"services", logo:"./logos/jl-repairs.jpeg", fb:"https://www.facebook.com/JLfix/",
+    sells:"We specialize in electronics soldering and repairing. From crack screen to integrated circuit issue we can help. JLfix",
+    sells_es:"Nos especializamos en soldadura y reparación de electrónicos. Desde pantallas quebradas hasta problemas de circuito integrado, podemos ayudar. JLfix",
+    area:"Pick up", area_es:"Recoger", phone:"2246367149",
+    hours:"Tuesday to Saturday 10-5pm", hours_es:"Martes a sábado 10–5pm" },
   { handle:"tamales.doncheto", name:"Tamales Don Cheto", cat:"food", sells:"Tamales by the dozen — pork, chicken, rajas, sweet. Weekend pre-orders only.", sells_es:"Tamales por docena — puerco, pollo, rajas, dulces. Solo pedidos de fin de semana.", area:"Pickup Saturday mornings, south Waukegan", area_es:"Recoger sábados por la mañana, sur de Waukegan", phone:"2245550188", hours:"Thursday & Friday", hours_es:"Jueves y viernes" },
   { handle:"dulcesbymari", name:"Dulces by Mari", cat:"food", sells:"Tres leches, flan, chocolate-covered strawberries. Custom cakes with 3 days notice.", sells_es:"Tres leches, flan, fresas con chocolate. Pasteles a pedido con 3 días.", area:"Pickup near Belvidere & Lewis, or delivery in Waukegan for $5", area_es:"Recoger cerca de Belvidere y Lewis, o entrega en Waukegan por $5", phone:"2245550142", hours:"Weekdays after 4pm", hours_es:"Días de semana después de las 4pm" },
   { handle:"nailsbyjazz_wkgn", name:"Nails by Jazz", cat:"beauty", sells:"Acrylic sets, gel-x, nail art. Home studio, appointment only.", sells_es:"Acrílicos, gel-x, arte en uñas. Estudio en casa, solo con cita.", area:"Home studio off Grand Ave", area_es:"Estudio en casa cerca de Grand Ave", phone:"2245550119", hours:"Anytime, DM is fastest", hours_es:"Cualquier hora, el DM es más rápido" },
@@ -1076,7 +1100,7 @@ class Component extends DCLogic {
     const active = CATS[i];
 
     const rows = SEED.map(v => ({
-      ...v, slug: slugify(v.handle), fb: FB[v.handle] || "", web: WEB[v.handle] || "", color: tint(catOf(v.cat).bg, .55),
+      ...v, slug: slugify(v.handle || v.name), fb: v.fb || FB[v.handle] || "", web: v.web || WEB[v.handle] || "", logo: v.logo || "", color: tint(catOf(v.cat).bg, .55),
       initials: initials(v.name)
     }));
 
@@ -1127,8 +1151,8 @@ class Component extends DCLogic {
     const vendors = filtered.map(v => {
       const cc = CATS.find(x => x.id === v.cat) || {};
       return {
-        key:v.slug, at:"@"+v.handle, name:v.name, sells: es ? v.sells_es : v.sells,
-        cat: es ? cc.es : cc.en, color:v.color, initials:v.initials,
+        key:v.slug, at: v.handle ? "@"+v.handle : v.name, name: v.handle ? v.name : (v.owner || ""), sells: es ? v.sells_es : v.sells,
+        cat: es ? cc.es : cc.en, color:v.color, initials:v.initials, logo:v.logo, hasLogo:!!v.logo,
         onClick: e => { e.preventDefault(); this.setState({ view:"vendor", slug:v.slug }); window.scrollTo(0,0); }
       };
     });
@@ -1145,6 +1169,7 @@ class Component extends DCLogic {
     if (vr.area) vRows.push({ k:c.area, v: es ? vr.area_es : vr.area });
     if (vr.hours) vRows.push({ k:c.hours, v: es ? vr.hours_es : vr.hours });
     if (vr.phone) vRows.push({ k:c.phone, v: prettyPhone(vr.phone) });
+    if (vr.owner) vRows.push({ k: es ? "Quién atiende" : "Who to ask for", v: vr.owner });
     const vcc = CATS.find(x => x.id === vr.cat) || {};
 
     /* ---- events ---- */
@@ -1229,9 +1254,10 @@ class Component extends DCLogic {
       },
       spotTileWrapStyle:{ display:"flex", justifyContent: mobile ? "flex-start" : "flex-end" },
       spot:{
-        badge: es ? crit.es : crit.en, name: sp.name, at:"@"+sp.handle,
+        badge: es ? crit.es : crit.en, name: sp.name,
+        sub: (sp.handle ? "@"+sp.handle+" · " : "") + (es ? spc.es : spc.en),
         cat: es ? spc.es : spc.en, sells: es ? sp.sells_es : sp.sells, meta: spotMeta,
-        color: tint(spc.bg, .85), initials: sp.initials,
+        color: tint(spc.bg, .85), initials: sp.initials, ig: !!sp.handle, logo: sp.logo, hasLogo: !!sp.logo,
         cta: es ? "Ver el negocio" : "See the business",
         fb:!!sp.fb, fbUrl:sp.fb, web:!!sp.web, webUrl:sp.web,
         igUrl:"https://instagram.com/"+sp.handle,
@@ -1240,7 +1266,7 @@ class Component extends DCLogic {
       chips, vendors, term, countText: filtered.length + " " + c.showing,
       isEmpty: filtered.length === 0,
       vendor:{
-        at:"@"+vr.handle, name:vr.name, cat: es ? vcc.es : vcc.en, color:vr.color, initials:vr.initials,
+        at: vr.handle ? "@"+vr.handle : vr.name, name: vr.handle ? vr.name : (vr.owner || ""), cat: es ? vcc.es : vcc.en, color:vr.color, initials:vr.initials, logo:vr.logo, hasLogo:!!vr.logo,
         handle:!!vr.handle, phone:!!vr.phone, fb:!!vr.fb, fbUrl:vr.fb, web:!!vr.web, webUrl:vr.web,
         rows:vRows.map((r,k)=>({ ...r, key:k })),
         igUrl:"https://instagram.com/"+vr.handle, smsUrl:"sms:+1"+vr.phone, telUrl:"tel:+1"+vr.phone
