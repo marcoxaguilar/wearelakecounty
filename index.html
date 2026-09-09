@@ -821,6 +821,21 @@ const T = {
 };
 
 const SEED = [
+  { handle:"g_dconstruction", owner:"Dalyne Yanez", name:"G&D Construction and Snow Removal", cat:"services", logo:"./logos/gd-construction.png", fb:"https://www.facebook.com/GDLandscapeSnow", web:"https://gdconstructionandsnow.com/",
+    sells:"G&D Construction & Snow Removal provides professional outdoor construction and property improvement services, including patios, retaining walls, fire pits, walkways, decks, asphalt, and concrete for residential and commercial properties. During the winter season, we also offer reliable commercial snow and ice management, including plowing, salting, and site maintenance to keep properties safe and accessible.",
+    sells_es:"G&D Construction & Snow Removal ofrece servicios profesionales de construcción exterior y mejoras de propiedades: patios, muros de contención, fogatas, andadores, decks, asfalto y concreto para propiedades residenciales y comerciales. En invierno también ofrecemos manejo comercial de nieve y hielo — plowing, sal y mantenimiento del sitio para mantener las propiedades seguras y accesibles.",
+    area:"", area_es:"", phone:"7735018699",
+    hours:"Monday-Saturday: 6:30am-3:30pm", hours_es:"Lunes a sábado: 6:30am–3:30pm" },
+  { handle:"", owner:"Dalyne Yanez", sub:"Mulch and Landscape Supply", name:"G&D", cat:"services", logo:"./logos/gd-mulch.png", web:"https://gdmulchmaterials.com/",
+    sells:"Premium triple ground mulch, fine mulch, leaf mulch, wood chips, and landscape materials delivered to your residential or commercial property across Lake County, IL. Quality product. Reliable delivery. Fair pricing.",
+    sells_es:"Mulch premium triple molido, mulch fino, mulch de hoja, astillas de madera y materiales de paisajismo entregados a tu propiedad residencial o comercial en todo Lake County, IL. Producto de calidad. Entrega confiable. Precio justo.",
+    area:"Delivery 24-48 hour advance notice.", area_es:"Entrega con 24–48 horas de anticipación.", phone:"7735018699",
+    hours:"Monday-Saturday: 6:30am-3:30pm", hours_es:"Lunes a sábado: 6:30am–3:30pm" },
+  { handle:"sparkncode", owner:"Izaac Lopez", name:"Spark N Code", cat:"services", logo:"./logos/spark-n-code.png", fb:"https://facebook.com/sparkncode", web:"https://sparkncode.com",
+    sells:"Website design, SEO, Google Business Optimization.",
+    sells_es:"Diseño de sitios web, SEO y optimización de Google Business.",
+    area:"", area_es:"", phone:"2242144842",
+    hours:"Anytime", hours_es:"A cualquier hora" },
   { handle:"", owner:"Jasmine Lopez", name:"Borrachas Bar", cat:"party", logo:"./logos/borrachas-bar.jpeg", fb:"https://www.facebook.com/share/1GW9ZLxgrs/?mibextid=wwXIfr",
     sells:"Mobile bartending for Lake County for parties, cookouts, quinces & weddings",
     sells_es:"Barra móvil para Lake County — fiestas, parrilladas, quinces y bodas",
@@ -898,6 +913,14 @@ const kindOf = id => KINDS.find(k => k.id === id) || KINDS[0];
 const CONTACT_EMAIL = "marcoaguilarseo@gmail.com";
 
 const EVENTS = [
+  { id:"mexican-independence-festival", kind:"festival", name:"Mexican Independence Festival 2026", name_es:"Festival Independencia de México 2026",
+    date:"2026-09-12", dateEnd:"", start:"12:00", end:"22:00",
+    place:"On The Rocks, Waukegan Harbor & Marina", city:"Waukegan", addr:"175 S Harbor Pl, Waukegan, IL 60085",
+    cost:"Free admission", cost_es:"Entrada gratis", host:"Lake County Cultural Association NFP", host_es:"Lake County Cultural Association NFP",
+    contact:"", spots:false, link:"",
+    desc:"El Grito by the harbor — Mariachi Nuevo México, La Nueva Sonora Santanera, Descontrol, ballet folklórico, Chinelos de Morelos, and Danza Quetzalcóatl, plus antique cars and food all day. Bring your own folding chair.",
+    desc_es:"El Grito junto al puerto — Mariachi Nuevo México, La Nueva Sonora Santanera, Descontrol, ballet folklórico, Chinelos de Morelos y Danza Quetzalcóatl, además de autos antiguos y comida todo el día. Lleva tu propia silla plegable." },
+
   { id:"vernon-hills-card-expo", kind:"cards", name:"Vernon Hills Monthly Card Expo", name_es:"Expo Mensual de Cartas de Vernon Hills",
     date:"2026-09-13", dateEnd:"", start:"10:00", end:"16:00",
     place:"Hawthorn Mall", city:"Vernon Hills", addr:"122 Hawthorn Center, Vernon Hills, IL 60061",
@@ -1163,7 +1186,7 @@ class Component extends DCLogic {
     const vendors = filtered.map(v => {
       const cc = CATS.find(x => x.id === v.cat) || {};
       return {
-        key:v.slug, at: v.handle ? "@"+v.handle : v.name, name: v.handle ? v.name : (v.owner || ""), sells: es ? v.sells_es : v.sells,
+        key:v.slug, at: v.handle ? "@"+v.handle : v.name, name: v.handle ? v.name : (v.sub || v.owner || ""), sells: es ? v.sells_es : v.sells,
         cat: es ? cc.es : cc.en, color:v.color, initials:v.initials, logo:v.logo, hasLogo:!!v.logo,
         onClick: e => { e.preventDefault(); this.setState({ view:"vendor", slug:v.slug }); window.scrollTo(0,0); }
       };
@@ -1278,7 +1301,7 @@ class Component extends DCLogic {
       chips, vendors, term, countText: filtered.length + " " + c.showing,
       isEmpty: filtered.length === 0,
       vendor:{
-        at: vr.handle ? "@"+vr.handle : vr.name, name: vr.handle ? vr.name : (vr.owner || ""), cat: es ? vcc.es : vcc.en, color:vr.color, initials:vr.initials, logo:vr.logo, hasLogo:!!vr.logo,
+        at: vr.handle ? "@"+vr.handle : vr.name, name: vr.handle ? vr.name : (vr.sub || vr.owner || ""), cat: es ? vcc.es : vcc.en, color:vr.color, initials:vr.initials, logo:vr.logo, hasLogo:!!vr.logo,
         handle:!!vr.handle, phone:!!vr.phone, fb:!!vr.fb, fbUrl:vr.fb, web:!!vr.web, webUrl:vr.web,
         rows:vRows.map((r,k)=>({ ...r, key:k })),
         igUrl:"https://instagram.com/"+vr.handle, smsUrl:"sms:+1"+vr.phone, telUrl:"tel:+1"+vr.phone
