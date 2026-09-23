@@ -60,6 +60,8 @@
         <div style="display:flex;background:rgba(0,0,0,.18);border:2px solid rgba(255,255,255,.6);border-radius:999px;padding:3px">
           <button type="button" onClick="{{ goHome }}" style="{{ tabVendorStyle }}">{{ c.tab_vendors }}</button>
           <button type="button" onClick="{{ goEvents }}" style="{{ tabEventStyle }}">{{ c.tab_events }}</button>
+          <button type="button" onClick="{{ goVoteAll }}" style="{{ tabVoteStyle }}">★ {{ c.tab_vote }}</button>
+          <button type="button" onClick="{{ goMission }}" style="{{ tabMissionStyle }}">{{ c.tab_mission }}</button>
         </div>
         <button type="button" onClick="{{ toggleLang }}" style="font-family:'Archivo',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#fff;background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.6);border-radius:999px;padding:8px 13px;cursor:pointer;transition:background-color 150ms" style-hover="background:rgba(255,255,255,.3)">{{ c.lang }}</button>
         <a href="#add" onClick="{{ goSubmit }}" style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#16151A;background:#fff;border:2px solid #16151A;border-radius:999px;padding:8px 13px;transition:transform 150ms" style-hover="transform:translateY(-2px);color:#16151A">{{ c.nav_add }}</a>
@@ -109,34 +111,23 @@
   </div>
 </div>
 
-<section style="{{ spotBandStyle }}">
-  <div style="{{ spotGridStyle }}">
-    <div>
-      <span style="display:inline-block;font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.18em;background:#16151A;color:#FFF6EC;border-radius:999px;padding:7px 13px">{{ spot.badge }}</span>
-      <p style="margin:16px 0 0;font-family:'Anton',sans-serif;font-size:clamp(38px,10vw,84px);line-height:.9;letter-spacing:-.02em;text-transform:uppercase;text-wrap:balance">{{ spot.name }}</p>
-      <p style="margin:18px 0 0;font-size:15px;font-weight:800;letter-spacing:.02em;opacity:.6">{{ spot.sub }}</p>
-      <p style="margin:14px 0 0;max-width:520px;font-size:16px;line-height:1.55;text-wrap:pretty;opacity:.88">{{ spot.sells }}</p>
-      <p style="margin:14px 0 0;max-width:520px;font-size:13px;line-height:1.5;opacity:.6">{{ spot.meta }}</p>
-      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:22px">
-        <a href="#vendor" onClick="{{ spot.onOpen }}" style="min-height:52px;display:grid;place-items:center;padding:0 22px;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;background:#fff;color:#16151A;border:3px solid #16151A;border-radius:14px;box-shadow:5px 5px 0 #16151A;transition:transform 150ms" style-hover="transform:translate(-2px,-2px)">{{ spot.cta }}</a>
-        <sc-if value="{{ spot.ig }}" hint-placeholder-val="{{ true }}">
-          <a href="{{ spot.igUrl }}" target="_blank" rel="noopener" style="min-height:52px;display:grid;place-items:center;padding:0 22px;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;background:#16151A;color:#FFF6EC;border:3px solid #16151A;border-radius:14px;transition:transform 150ms" style-hover="transform:translate(-2px,-2px);color:#FFF6EC">{{ c.ig }}</a>
-        </sc-if>
-        <sc-if value="{{ spot.web }}" hint-placeholder-val="{{ true }}">
-          <a href="{{ spot.webUrl }}" target="_blank" rel="noopener" style="min-height:52px;display:grid;place-items:center;padding:0 22px;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;background:transparent;color:#16151A;border:3px solid #16151A;border-radius:14px;transition:transform 150ms" style-hover="transform:translate(-2px,-2px)">{{ c.web }}</a>
-        </sc-if>
-        <sc-if value="{{ spot.fb }}" hint-placeholder-val="{{ true }}">
-          <a href="{{ spot.fbUrl }}" target="_blank" rel="noopener" style="min-height:52px;display:grid;place-items:center;padding:0 22px;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;background:transparent;color:#16151A;border:3px solid #16151A;border-radius:14px;transition:transform 150ms" style-hover="transform:translate(-2px,-2px)">{{ c.fb }}</a>
-        </sc-if>
-      </div>
+<section style="background:#F2C14E;border-top:3px solid #16151A;border-bottom:3px solid #16151A">
+  <div style="max-width:1180px;margin:0 auto;padding:34px 16px 38px">
+    <span style="display:inline-block;font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.18em;background:#16151A;color:#F2C14E;border-radius:999px;padding:7px 13px;transform:rotate(-2deg)">★ {{ c.vt_kicker }} · {{ vote.month }}</span>
+    <p style="margin:16px 0 0;font-family:'Anton',sans-serif;font-size:clamp(38px,10vw,84px);line-height:.9;letter-spacing:-.02em;text-transform:uppercase;text-wrap:balance">{{ c.hs_h }}</p>
+    <p style="margin:14px 0 0;max-width:560px;font-size:16px;line-height:1.55;font-weight:600;text-wrap:pretty">{{ c.hs_p }}</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:20px">
+      <sc-for list="{{ ballot }}" as="b" hint-placeholder-count="8">
+        <a href="#vote" onClick="{{ b.onOpen }}" title="{{ b.name }}" style="position:relative;overflow:hidden;width:54px;height:54px;flex:none;border:3px solid #16151A;border-radius:14px;display:grid;place-items:center;background:#FFF6EC;box-shadow:3px 3px 0 #16151A;transition:transform 150ms" style-hover="transform:translate(-2px,-2px)">
+          <span style="font-family:'Anton',sans-serif;font-size:20px;color:#16151A">{{ b.initials }}</span>
+          <sc-if value="{{ b.hasLogo }}" hint-placeholder-val="{{ false }}">
+            <span role="img" aria-label="{{ b.name }}" style="position:absolute;inset:0;background-color:#fff;background-image:url('{{ b.logo }}');background-size:84%;background-position:center;background-repeat:no-repeat"></span>
+          </sc-if>
+        </a>
+      </sc-for>
     </div>
-    <div style="{{ spotTileWrapStyle }}">
-      <div style="position:relative;overflow:hidden;width:180px;height:180px;border:3px solid #16151A;border-radius:26px;display:grid;place-items:center;background:{{ spot.color }};box-shadow:9px 9px 0 #16151A;transform:rotate(-3deg)">
-        <span style="font-family:'Anton',sans-serif;font-size:76px;color:#16151A;opacity:.82">{{ spot.initials }}</span>
-        <sc-if value="{{ spot.hasLogo }}" hint-placeholder-val="{{ false }}">
-          <div role="img" aria-label="{{ spot.name }} logo" style="position:absolute;inset:0;background-color:#fff;background-image:url('{{ spot.logo }}');background-size:82%;background-position:center;background-repeat:no-repeat"></div>
-        </sc-if>
-      </div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:24px">
+      <a href="#vote" onClick="{{ goVoteAll }}" style="min-height:56px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 26px;font-family:'Anton',sans-serif;font-size:20px;text-transform:uppercase;letter-spacing:.02em;background:#16151A;color:#F2C14E;border:3px solid #16151A;border-radius:14px;box-shadow:5px 5px 0 rgba(22,21,26,.3);transition:transform 150ms" style-hover="transform:translate(-2px,-2px);color:#F2C14E">★ {{ c.hs_cta }}</a>
     </div>
   </div>
 </section>
@@ -197,6 +188,8 @@
           <div style="display:flex;background:rgba(0,0,0,.18);border:2px solid rgba(255,255,255,.6);border-radius:999px;padding:3px">
             <button type="button" onClick="{{ goHome }}" style="{{ tabVendorStyle }}">{{ c.tab_vendors }}</button>
             <button type="button" onClick="{{ goEvents }}" style="{{ tabEventStyle }}">{{ c.tab_events }}</button>
+          <button type="button" onClick="{{ goVoteAll }}" style="{{ tabVoteStyle }}">★ {{ c.tab_vote }}</button>
+          <button type="button" onClick="{{ goMission }}" style="{{ tabMissionStyle }}">{{ c.tab_mission }}</button>
           </div>
           <button type="button" onClick="{{ toggleLang }}" style="font-family:'Archivo',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#fff;background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.6);border-radius:999px;padding:8px 13px;cursor:pointer">{{ c.lang }}</button>
           <a href="#add-event" onClick="{{ goSubmitEvent }}" style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#16151A;background:#fff;border:2px solid #16151A;border-radius:999px;padding:8px 13px;transition:transform 150ms" style-hover="transform:translateY(-2px);color:#16151A">{{ c.nav_add_event }}</a>
@@ -253,7 +246,9 @@
             <p style="margin:7px 0 0;font-size:13.5px;line-height:1.45;opacity:.7">{{ e.where }}</p>
             <p style="margin:2px 0 0;font-size:13.5px;line-height:1.45;opacity:.7">{{ e.time }}</p>
             <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:11px">
-              <span style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;border:2px solid #16151A;border-radius:999px;padding:3px 8px">{{ e.cost }}</span>
+              <sc-if value="{{ e.cost }}" hint-placeholder-val="{{ true }}">
+                <span style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;border:2px solid #16151A;border-radius:999px;padding:3px 8px">{{ e.cost }}</span>
+              </sc-if>
               <sc-if value="{{ e.spots }}" hint-placeholder-val="{{ true }}">
                 <span style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;background:#16151A;color:#FFF6EC;border:2px solid #16151A;border-radius:999px;padding:3px 8px">{{ c.ev_spots }}</span>
               </sc-if>
@@ -285,7 +280,9 @@
       <h1 style="margin:8px 0 0;font-family:'Anton',sans-serif;font-size:clamp(34px,9vw,72px);line-height:.94;letter-spacing:-.02em;text-transform:uppercase;color:#fff;text-wrap:balance">{{ event.name }}</h1>
       <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:16px">
         <span style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;background:#fff;border:2px solid #16151A;border-radius:999px;padding:5px 11px">{{ event.dateLong }}</span>
-        <span style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;background:#fff;border:2px solid #16151A;border-radius:999px;padding:5px 11px">{{ event.cost }}</span>
+        <sc-if value="{{ event.cost }}" hint-placeholder-val="{{ true }}">
+          <span style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;background:#fff;border:2px solid #16151A;border-radius:999px;padding:5px 11px">{{ event.cost }}</span>
+        </sc-if>
         <sc-if value="{{ event.spots }}" hint-placeholder-val="{{ true }}">
           <span style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;background:#16151A;color:#FFF6EC;border:2px solid #16151A;border-radius:999px;padding:5px 11px">{{ c.ev_spots }}</span>
         </sc-if>
@@ -364,6 +361,8 @@
       </sc-if>
     </div>
 
+    <sc-if value="{{ vendor.real }}" hint-placeholder-val="{{ true }}"><a href="#vote" onClick="{{ goVote }}" style="margin-top:14px;min-height:60px;display:flex;align-items:center;justify-content:center;gap:10px;padding:0 20px;font-family:'Anton',sans-serif;font-size:20px;text-transform:uppercase;letter-spacing:.02em;background:#F2C14E;color:#16151A;border:3px solid #16151A;border-radius:16px;box-shadow:5px 5px 0 #16151A;transition:transform 150ms" style-hover="transform:translate(-2px,-2px);color:#16151A">★ {{ c.vt_cta }}</a></sc-if>
+
     <dl style="margin:26px 0 0;display:grid;gap:14px">
       <sc-for list="{{ vendor.rows }}" as="r" hint-placeholder-count="4">
         <div style="background:#fff;border:3px solid #16151A;border-radius:18px;padding:16px 17px">
@@ -372,6 +371,124 @@
         </div>
       </sc-for>
     </dl>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isVoteAll }}" hint-placeholder-val="{{ false }}">
+<div>
+  <div style="background:#F2C14E;border-bottom:3px solid #16151A">
+    <div style="max-width:1080px;margin:0 auto;padding:20px 16px 38px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <a href="#browse" onClick="{{ goHome }}" style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.16em;color:#16151A;opacity:.8" style-hover="color:#16151A;opacity:1">← {{ c.back }}</a>
+        <button type="button" onClick="{{ toggleLang }}" style="font-family:'Archivo',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#16151A;background:rgba(255,255,255,.45);border:2px solid #16151A;border-radius:999px;padding:8px 13px;cursor:pointer">{{ c.lang }}</button>
+      </div>
+      <span style="display:inline-block;margin-top:28px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.18em;background:#16151A;color:#F2C14E;border-radius:999px;padding:9px 16px;transform:rotate(-2deg)">★ {{ c.vt_kicker }} · {{ vote.month }}</span>
+      <h1 style="margin:16px 0 0;font-family:'Anton',sans-serif;font-size:clamp(46px,12vw,110px);line-height:.88;letter-spacing:-.03em;text-transform:uppercase;text-wrap:balance">{{ c.va_h1 }}</h1>
+      <p style="margin:14px 0 0;max-width:600px;font-size:17px;line-height:1.55;font-weight:600;text-wrap:pretty">{{ c.va_lede }}</p>
+
+      <div style="margin-top:24px;display:grid;gap:12px;{{ ctPromptCols }}">
+        <sc-for list="{{ vote.rules }}" as="r" hint-placeholder-count="3">
+          <div style="display:flex;gap:12px;align-items:flex-start;background:#FFF6EC;border:3px solid #16151A;border-radius:18px;padding:14px 15px;box-shadow:5px 5px 0 #16151A">
+            <span style="flex:none;width:32px;height:32px;display:grid;place-items:center;font-family:'Anton',sans-serif;font-size:17px;background:#16151A;color:#F2C14E;border-radius:10px">{{ r.n }}</span>
+            <div style="min-width:0">
+              <p style="margin:0;font-family:'Anton',sans-serif;font-size:17px;text-transform:uppercase">{{ r.h }}</p>
+              <p style="margin:4px 0 0;font-size:13.5px;line-height:1.5;opacity:.75;text-wrap:pretty">{{ r.t }}</p>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1080px;margin:0 auto;padding:30px 16px 64px">
+    <sc-if value="{{ vote.voted }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-bottom:20px;background:#16151A;color:#FFF6EC;border-radius:18px;padding:16px 18px;font-size:15px;font-weight:700;line-height:1.5">★ {{ vote.votedText }}</div>
+    </sc-if>
+    <div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))">
+      <sc-for list="{{ ballot }}" as="b" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;background:#fff;border:3px solid #16151A;border-radius:22px;box-shadow:6px 6px 0 #16151A;overflow:hidden">
+          <div style="{{ b.band }}">
+            <div style="position:relative;overflow:hidden;width:72px;height:72px;flex:none;border:3px solid #16151A;border-radius:16px;display:grid;place-items:center;background:#FFF6EC">
+              <span style="font-family:'Anton',sans-serif;font-size:30px">{{ b.initials }}</span>
+              <sc-if value="{{ b.hasLogo }}" hint-placeholder-val="{{ false }}">
+                <div role="img" aria-label="{{ b.name }} logo" style="position:absolute;inset:0;background-color:#fff;background-image:url('{{ b.logo }}');background-size:84%;background-position:center;background-repeat:no-repeat"></div>
+              </sc-if>
+            </div>
+            <div style="min-width:0">
+              <p style="margin:0;font-family:'Anton',sans-serif;font-size:22px;line-height:1;text-transform:uppercase;word-break:break-word">{{ b.name }}</p>
+              <p style="margin:6px 0 0;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em">{{ b.cat }}</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;padding:14px;margin-top:auto">
+            <button type="button" onClick="{{ b.onVote }}" disabled="{{ b.disabled }}" style="{{ b.btnStyle }}">{{ b.btnLabel }}</button>
+            <a href="#vote" onClick="{{ b.onOpen }}" style="flex:none;min-height:50px;display:grid;place-items:center;padding:0 14px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;background:#fff;color:#16151A;border:3px solid #16151A;border-radius:14px" style-hover="color:#16151A;background:#FFF6EC">{{ c.va_share }}</a>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isVote }}" hint-placeholder-val="{{ false }}">
+<div>
+  <div style="{{ vHeadStyle }}">
+    <div style="max-width:720px;margin:0 auto;padding:20px 16px 40px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <a href="#vendor" onClick="{{ goVendorFromVote }}" style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.16em;color:#fff;opacity:.9" style-hover="color:#fff;opacity:1">← {{ c.vt_profile }}</a>
+        <button type="button" onClick="{{ toggleLang }}" style="font-family:'Archivo',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#fff;background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.6);border-radius:999px;padding:8px 13px;cursor:pointer">{{ c.lang }}</button>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;text-align:center;margin-top:28px">
+        <span style="font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.18em;background:#16151A;color:#F2C14E;border-radius:999px;padding:9px 16px;transform:rotate(-2deg)">★ {{ c.vt_kicker }} · {{ vote.month }}</span>
+        <div style="position:relative;overflow:hidden;width:150px;height:150px;margin-top:24px;border:3px solid #16151A;border-radius:28px;display:grid;place-items:center;background:#FFF6EC;box-shadow:8px 8px 0 #16151A">
+          <span style="font-family:'Anton',sans-serif;font-size:62px;color:#16151A">{{ vendor.initials }}</span>
+          <sc-if value="{{ vendor.hasLogo }}" hint-placeholder-val="{{ false }}">
+            <div role="img" aria-label="{{ vendor.name }} logo" style="position:absolute;inset:0;background-color:#fff;background-image:url('{{ vendor.logo }}');background-size:84%;background-position:center;background-repeat:no-repeat"></div>
+          </sc-if>
+        </div>
+        <p style="margin:24px 0 0;font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:.16em;color:#fff">{{ c.vt_for }}</p>
+        <h1 style="margin:6px 0 0;font-family:'Anton',sans-serif;font-size:clamp(40px,10vw,76px);line-height:.92;letter-spacing:-.02em;text-transform:uppercase;color:#fff;text-wrap:balance;word-break:break-word">{{ vote.title }}</h1>
+        <p style="margin:10px 0 0;font-size:15px;font-weight:700;color:#fff;opacity:.9">{{ vendor.cat }} · Lake County, IL</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:720px;margin:0 auto;padding:30px 16px 64px">
+    <sc-if value="{{ vote.canVote }}" hint-placeholder-val="{{ true }}">
+      <div style="background:#fff;border:3px solid #16151A;border-radius:24px;box-shadow:8px 8px 0 #16151A;padding:28px 22px 26px;text-align:center">
+        <button type="button" onClick="{{ castVote }}" style="width:100%;min-height:76px;font-family:'Anton',sans-serif;font-size:clamp(26px,6vw,36px);text-transform:uppercase;letter-spacing:.01em;background:#F2C14E;color:#16151A;border:3px solid #16151A;border-radius:18px;box-shadow:6px 6px 0 #16151A;cursor:pointer;transition:transform 150ms" style-hover="transform:translate(-2px,-2px)" style-active="transform:translate(3px,3px);box-shadow:2px 2px 0 #16151A">★ {{ c.vt_btn }}</button>
+        <p style="margin:14px 0 0;font-size:13.5px;line-height:1.5;opacity:.65;text-wrap:pretty">{{ c.vt_note }}</p>
+      </div>
+    </sc-if>
+    <sc-if value="{{ vote.voted }}" hint-placeholder-val="{{ false }}">
+      <div style="background:#fff;border:3px solid #16151A;border-radius:24px;box-shadow:8px 8px 0 #16151A;padding:30px 22px 28px;text-align:center">
+        <p style="margin:0;font-family:'Anton',sans-serif;font-size:clamp(32px,8vw,50px);line-height:.95;text-transform:uppercase">{{ c.vt_done_h }}</p>
+        <p style="margin:12px auto 0;max-width:430px;font-size:15px;line-height:1.55;opacity:.75;text-wrap:pretty">{{ vote.doneText }}</p>
+      </div>
+    </sc-if>
+
+    <div style="margin-top:26px;background:#16151A;color:#FFF6EC;border:3px solid #16151A;border-radius:22px;padding:22px 20px 22px">
+      <p style="margin:0;font-family:'Anton',sans-serif;font-size:24px;line-height:1;text-transform:uppercase">{{ c.vt_share_h }}</p>
+      <p style="margin:8px 0 0;font-size:14px;line-height:1.5;opacity:.75;text-wrap:pretty">{{ c.vt_share_p }}</p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:16px">
+        <a href="{{ vote.fbShare }}" target="_blank" rel="noopener" style="flex:1 1 160px;min-height:52px;display:grid;place-items:center;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;background:#FFF6EC;color:#16151A;border:3px solid #FFF6EC;border-radius:14px" style-hover="color:#16151A;background:#F2C14E;border-color:#F2C14E">{{ c.vt_fb }}</a>
+        <button type="button" onClick="{{ copyVoteLink }}" style="flex:1 1 160px;min-height:52px;font-family:'Archivo',sans-serif;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;background:transparent;color:#FFF6EC;border:3px solid #FFF6EC;border-radius:14px;cursor:pointer" style-hover="background:rgba(255,255,255,.12)">{{ vote.copyLabel }}</button>
+      </div>
+      <p style="margin:14px 0 0;font-size:12.5px;font-weight:700;opacity:.55;word-break:break-all">{{ vote.url }}</p>
+    </div>
+
+    <ol style="list-style:none;margin:26px 0 0;padding:0;display:grid;gap:12px">
+      <sc-for list="{{ vote.rules }}" as="r" hint-placeholder-count="3">
+        <li style="display:flex;gap:14px;align-items:flex-start;background:#fff;border:3px solid #16151A;border-radius:18px;padding:15px 16px">
+          <span style="flex:none;width:34px;height:34px;display:grid;place-items:center;font-family:'Anton',sans-serif;font-size:18px;background:#F2C14E;border:2px solid #16151A;border-radius:10px">{{ r.n }}</span>
+          <div style="min-width:0">
+            <p style="margin:0;font-family:'Anton',sans-serif;font-size:18px;text-transform:uppercase">{{ r.h }}</p>
+            <p style="margin:4px 0 0;font-size:14px;line-height:1.5;opacity:.72;text-wrap:pretty">{{ r.t }}</p>
+          </div>
+        </li>
+      </sc-for>
+    </ol>
   </div>
 </div>
 </sc-if>
@@ -620,6 +737,61 @@
 </div>
 </sc-if>
 
+<sc-if value="{{ isMission }}" hint-placeholder-val="{{ false }}">
+<div>
+  <div style="background:#16151A;color:#FFF6EC;border-bottom:3px solid #16151A">
+    <div style="max-width:1080px;margin:0 auto;padding:20px 16px 40px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <a href="#browse" onClick="{{ goHome }}" style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.16em;color:#FFF6EC;opacity:.75" style-hover="color:#FFF6EC;opacity:1">← {{ c.back }}</a>
+        <button type="button" onClick="{{ toggleLang }}" style="font-family:'Archivo',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#FFF6EC;background:rgba(255,255,255,.1);border:2px solid #FFF6EC;border-radius:999px;padding:8px 13px;cursor:pointer">{{ c.lang }}</button>
+      </div>
+      <p style="margin:30px 0 0;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.2em;color:#F2C14E">{{ c.ms_kicker }}</p>
+      <h1 style="margin:12px 0 0;font-family:'Anton',sans-serif;font-size:clamp(52px,14vw,132px);line-height:.88;letter-spacing:-.03em;text-transform:uppercase;text-wrap:balance">{{ c.ms_h1 }}</h1>
+      <p style="margin:18px 0 0;max-width:620px;font-size:clamp(17px,2.4vw,21px);line-height:1.5;opacity:.85;text-wrap:pretty">{{ c.ms_lede }}</p>
+    </div>
+  </div>
+
+  <div style="background:#FFF6EC;border-bottom:3px solid #16151A;overflow:hidden">
+    <div style="max-width:1180px;margin:0 auto;padding:44px 12px 30px">
+      <div style="display:grid;gap:10px 6px;align-items:end;{{ msCastCols }}">
+        <sc-for list="{{ msCast }}" as="m" hint-placeholder-count="8">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:10px;min-width:0">
+            <div style="position:relative;width:100%;aspect-ratio:3/4">
+              <div style="{{ m.tile }}"></div>
+              <div role="img" aria-label="{{ m.label }}" style="position:absolute;left:-10%;right:-10%;bottom:0;height:118%;background-image:url('{{ m.src }}');background-size:contain;background-position:center bottom;background-repeat:no-repeat;filter:drop-shadow(4px 4px 0 rgba(22,21,26,.18))"></div>
+            </div>
+            <span style="font-family:'Anton',sans-serif;font-size:clamp(13px,1.6vw,18px);text-transform:uppercase;letter-spacing:.01em;text-align:center">{{ m.word }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1080px;margin:0 auto;padding:40px 16px 20px">
+    <ul style="list-style:none;margin:0;padding:0;display:grid;gap:14px;{{ ctPromptCols }}">
+      <sc-for list="{{ msPromises }}" as="p" hint-placeholder-count="3">
+        <li style="background:#fff;border:3px solid #16151A;border-radius:20px;padding:20px 20px 22px;box-shadow:6px 6px 0 #16151A">
+          <p style="margin:0;font-family:'Anton',sans-serif;font-size:24px;line-height:1;text-transform:uppercase;letter-spacing:-.01em">{{ p.h }}</p>
+          <p style="margin:10px 0 0;font-size:15px;line-height:1.55;opacity:.75;text-wrap:pretty">{{ p.t }}</p>
+        </li>
+      </sc-for>
+    </ul>
+    <p style="margin:30px 0 0;max-width:680px;font-size:18px;line-height:1.6;font-weight:600;text-wrap:pretty">{{ c.ms_body }}</p>
+  </div>
+
+  <div style="max-width:1080px;margin:0 auto;padding:24px 16px 72px">
+    <div style="background:#F2C14E;border:3px solid #16151A;border-radius:26px;box-shadow:8px 8px 0 #16151A;padding:40px 24px 42px;text-align:center">
+      <p style="margin:0;font-family:'Anton',sans-serif;font-size:clamp(40px,9vw,88px);line-height:.9;letter-spacing:-.02em;text-transform:uppercase;text-wrap:balance">{{ c.ms_close_h }}</p>
+      <p style="margin:14px auto 0;max-width:480px;font-size:16px;line-height:1.55;font-weight:600;text-wrap:pretty">{{ c.ms_close_p }}</p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:24px">
+        <button type="button" onClick="{{ goSubmit }}" style="font-family:'Archivo',sans-serif;min-height:56px;padding:0 24px;font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;background:#16151A;color:#FFF6EC;border:3px solid #16151A;border-radius:14px;cursor:pointer;transition:transform 150ms" style-hover="transform:translate(-2px,-2px)">{{ c.nav_add }}</button>
+        <button type="button" onClick="{{ goHome }}" style="font-family:'Archivo',sans-serif;min-height:56px;padding:0 24px;font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;background:#fff;color:#16151A;border:3px solid #16151A;border-radius:14px;cursor:pointer">{{ c.tab_vendors }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
 <footer style="background:#16151A;color:#FFF6EC;padding:44px 16px 40px">
   <div style="max-width:1180px;margin:0 auto">
     <p style="margin:0;font-family:'Anton',sans-serif;font-size:clamp(34px,11vw,86px);line-height:.92;letter-spacing:-.02em;text-transform:uppercase;white-space:pre-line">{{ c.foot_mark }}</p>
@@ -631,6 +803,8 @@
       <a href="#browse" onClick="{{ goHome }}" style="color:#FFF6EC;opacity:.6" style-hover="color:#FFF6EC;opacity:1">{{ c.tab_vendors }}</a>
       <a href="#events" onClick="{{ goEvents }}" style="color:#FFF6EC;opacity:.6" style-hover="color:#FFF6EC;opacity:1">{{ c.tab_events }}</a>
       <a href="#contact" onClick="{{ goContact }}" style="color:#FFF6EC;border-bottom:2px solid #FFF6EC;padding-bottom:2px" style-hover="color:#6BBF7A;border-color:#6BBF7A">{{ c.nav_contact }}</a>
+      <a href="#vote" onClick="{{ goVoteAll }}" style="color:#FFF6EC;border-bottom:2px solid #FFF6EC;padding-bottom:2px" style-hover="color:#F2C14E;border-color:#F2C14E">{{ c.va_h1 }}</a>
+      <a href="#mission" onClick="{{ goMission }}" style="color:#FFF6EC;border-bottom:2px solid #FFF6EC;padding-bottom:2px" style-hover="color:#F2C14E;border-color:#F2C14E">{{ c.nav_mission }}</a>
     </div>
     <p style="margin:28px 0 0;font-size:12px;opacity:.45">Built by Midwest Apex</p>
   </div>
@@ -640,36 +814,40 @@
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:420,&quot;height&quot;:900},&quot;spotlightCriteria&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;New this week&quot;,&quot;Vendor of the week&quot;,&quot;Selling this weekend&quot;,&quot;Neighbor favorite&quot;],&quot;default&quot;:&quot;Vendor of the week&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Spotlight&quot;},&quot;spotlightPick&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;tamales-doncheto&quot;,&quot;dulcesbymari&quot;,&quot;nailsbyjazz-wkgn&quot;,&quot;thriftedby-ang&quot;,&quot;lupitas-elotes&quot;,&quot;crochetby-rosa&quot;,&quot;jr-partyrentals&quot;,&quot;pasteles-sofi&quot;,&quot;barberia-luis47&quot;,&quot;birria-los-primos&quot;,&quot;velas-y-aromas&quot;,&quot;detailing-by-omar&quot;,&quot;floresby-karla&quot;,&quot;gorditas-mama-chuy&quot;],&quot;default&quot;:&quot;birria-los-primos&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Spotlight&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:420,&quot;height&quot;:900},&quot;spotlightCriteria&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;New this week&quot;,&quot;Vendor of the week&quot;,&quot;Selling this weekend&quot;,&quot;Neighbor favorite&quot;],&quot;default&quot;:&quot;Vendor of the week&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Spotlight&quot;},&quot;spotlightPick&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;cheesemosa-co&quot;,&quot;haloautodetailingg&quot;,&quot;carboncollisionrepair&quot;,&quot;moane-landscaping-inc&quot;,&quot;g-dconstruction&quot;,&quot;g-d-mulch-landscape&quot;,&quot;sparkncode&quot;,&quot;borrachas-bar&quot;,&quot;pokedos&quot;,&quot;spacesbysambowyer&quot;,&quot;bakd-bylucy&quot;,&quot;bert-s-pizza-pub-gaming&quot;,&quot;jl-repairs-llc&quot;],&quot;default&quot;:&quot;cheesemosa-co&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Spotlight&quot;}}">
 const CATS = [
-  { id:"food",     word_en:"FOOD",     word_es:"COMIDA",  en:"Food & drinks",     es:"Comida y bebidas",
-    d_en:"Tamales, birria, elotes, tres leches, quince cakes — cooked at home, sold by the dozen.",
-    d_es:"Tamales, birria, elotes, tres leches, pasteles de quince — hechos en casa.",
-    bg:"#F4845F", src:"./characters/food.png" },
   { id:"tcg",      word_en:"TCG",      word_es:"CARTAS",  en:"Cards & collectibles", es:"Cartas y coleccionables",
     d_en:"Pokémon, sports cards, One Piece — singles, sealed packs, trades.",
     d_es:"Pokémon, cartas deportivas, One Piece — sueltas, selladas, cambios.",
     bg:"#E882B4", src:"./characters/tcg.png" },
+  { id:"artists",  word_en:"ARTISTS",  word_es:"ARTISTAS", en:"Artists",          es:"Artistas",
+    d_en:"Paintings, murals, portraits, prints and commissions from local artists.",
+    d_es:"Pinturas, murales, retratos, impresiones y encargos de artistas locales.",
+    bg:"#C9CBD1", src:"./characters/artists.png" },
+  { id:"food",     word_en:"FOOD",     word_es:"COMIDA",  en:"Food & drinks",     es:"Comida y bebidas",
+    d_en:"Tamales, birria, elotes, tres leches, quince cakes — cooked at home, sold by the dozen.",
+    d_es:"Tamales, birria, elotes, tres leches, pasteles de quince — hechos en casa.",
+    bg:"#F4845F", src:"./characters/food.png" },
   { id:"beauty",   word_en:"BEAUTY",   word_es:"BELLEZA", en:"Beauty & nails",    es:"Belleza y uñas",
     d_en:"Acrylics, gel-x, fades, beard work. Home studios, appointment only.",
     d_es:"Acrílicos, gel-x, cortes, barba. Estudios en casa, con cita.",
     bg:"#9B7BE8", src:"./characters/beauty.png" },
+  { id:"services", word_en:"SERVICES", word_es:"SERVICIOS", en:"Services",        es:"Servicios",
+    d_en:"Mobile car detailing, cleaning, repairs. They come to you.",
+    d_es:"Detallado de autos a domicilio, limpieza, reparaciones. Van a ti.",
+    bg:"#4FB3B8", src:"./characters/services.png" },
   { id:"clothing", word_en:"RESALE",   word_es:"ROPA",    en:"Clothing & resale", es:"Ropa y reventa",
     d_en:"Vintage tees, Levi's, sneakers. New drops every Sunday night.",
     d_es:"Playeras vintage, Levi's, tenis. Nuevo cada domingo por la noche.",
     bg:"#6EB5FF", src:"./characters/resale.png" },
-  { id:"art",      word_en:"HANDMADE", word_es:"HECHO",   en:"Art & handmade",    es:"Arte y hecho a mano",
-    d_en:"Crochet blankets, plushies, hand-poured candles, custom colors.",
-    d_es:"Cobijas de crochet, peluches, velas hechas a mano, colores a pedido.",
-    bg:"#6BBF7A", src:"./characters/handmade.png" },
   { id:"party",    word_en:"PARTY",    word_es:"FIESTAS", en:"Party & events",    es:"Fiestas y eventos",
     d_en:"Bounce houses, tables, ramos buchones, centerpieces. Setup included.",
     d_es:"Brincolines, mesas, ramos buchones, centros de mesa. Con instalación.",
     bg:"#F2C14E", src:"./characters/party.png" },
-  { id:"services", word_en:"SERVICES", word_es:"SERVICIOS", en:"Services",        es:"Servicios",
-    d_en:"Mobile car detailing, cleaning, repairs. They come to you.",
-    d_es:"Detallado de autos a domicilio, limpieza, reparaciones. Van a ti.",
-    bg:"#4FB3B8", src:"./characters/services.png" }
+  { id:"art",      word_en:"HANDMADE", word_es:"HECHO",   en:"Handmade & crafts",  es:"Hecho a mano",
+    d_en:"Crochet blankets, plushies, hand-poured candles, custom colors.",
+    d_es:"Cobijas de crochet, peluches, velas hechas a mano, colores a pedido.",
+    bg:"#6BBF7A", src:"./characters/handmade.png" }
 ];
 
 const T = {
@@ -726,6 +904,27 @@ const T = {
        esent_h:"Event received", esent_p:"We'll confirm the details and get it on the calendar. If it's happening within a week, tell us and we'll rush it.",
 
        nav_contact:"Say hello",
+       nav_mission:"Our mission", tab_mission:"Mission",
+       vt_cta:"Vote for Vendor of the Month", vt_kicker:"Vendor of the Month", vt_for:"Vote for", vt_profile:"Back to profile",
+       vt_btn:"Cast my vote", vt_note:"One vote per day. Come back tomorrow and vote again.",
+       vt_done_h:"Vote counted!", vt_done:"Thanks for backing a local business. You can vote again tomorrow.",
+       vt_share_h:"Help them win", vt_share_p:"Every share brings more votes. Send this link to friends and family.",
+       vt_fb:"Share on Facebook", vt_copy:"Copy link", vt_copied:"Link copied",
+       vt_r1_h:"Vote every day", vt_r1_t:"Everyone gets one vote per day until the end of the month.",
+       vt_r2_h:"Most votes wins", vt_r2_t:"Voting closes at the end of the month. We announce the winner on the 1st.",
+       vt_r3_h:"The prize", vt_r3_t:"A free promo video on our YouTube channel and a spotlight on the website.",
+       tab_vote:"Vote", hs_h:"Vote for your favorite", hs_p:"No winner yet. The business with the most votes this month gets a free promo video on our YouTube channel and a spotlight on the website.", hs_cta:"Vote now", va_h1:"Vendor of the Month", va_lede:"Pick your favorite local business. Every vote gets them closer to a free promo video and a spotlight on wearelakecounty.com.",
+       va_btn:"Vote", va_voted:"Voted", va_wait:"Tomorrow", va_share:"Share",
+       va_voted_text:"Your vote for {name} is in. Come back tomorrow to vote again.",
+       ms_kicker:"Our mission",
+       ms_h1:"Free. Forever.",
+       ms_lede:"We Are Lake County exists to put local businesses in front of their neighbors, at no cost. That was true on day one and it will never change.",
+       ms_p1_h:"Free to list. Always.", ms_p1_t:"Listing your business costs nothing today and it will cost nothing next year. No trial period, no premium tier.",
+       ms_p2_h:"No commission, no cut.", ms_p2_t:"We never take a percentage of a sale. Customers call you, text you, and pay you directly.",
+       ms_p3_h:"No paying to rank higher.", ms_p3_t:"Nobody buys a better spot. Every business gets the same card, the same buttons, and the same chance to be found.",
+       ms_body:"The taquería out of a kitchen, the detailer who comes to you, the artist taking commissions from a spare room: they're what makes this county feel like home. Our job is to make them easy to find.",
+       ms_close_h:"We grow together",
+       ms_close_p:"One business, one neighbor, one share at a time. The more of us who show up, the bigger Lake County gets.",
        ct_h1:"Tell us how we're doing",
        ct_lede:"This directory belongs to the people in it. If something's missing, wrong, or working beautifully, we want to hear it from you.",
        ct_s1:"Write to us",
@@ -799,6 +998,27 @@ const T = {
        esent_h:"Evento recibido", esent_p:"Confirmamos los datos y lo subimos al calendario. Si es dentro de una semana, avísanos y lo apuramos.",
 
        nav_contact:"Escríbenos",
+       nav_mission:"Nuestra misión", tab_mission:"Misión",
+       vt_cta:"Vota por el Negocio del Mes", vt_kicker:"Negocio del Mes", vt_for:"Vota por", vt_profile:"Volver al perfil",
+       vt_btn:"Votar", vt_note:"Un voto por día. Regresa mañana y vota otra vez.",
+       vt_done_h:"¡Voto contado!", vt_done:"Gracias por apoyar a un negocio local. Puedes votar otra vez mañana.",
+       vt_share_h:"Ayúdales a ganar", vt_share_p:"Cada vez que compartes llegan más votos. Manda este enlace a tu familia y amigos.",
+       vt_fb:"Compartir en Facebook", vt_copy:"Copiar enlace", vt_copied:"Enlace copiado",
+       vt_r1_h:"Vota cada día", vt_r1_t:"Cada persona tiene un voto por día hasta fin de mes.",
+       vt_r2_h:"Gana el que tenga más votos", vt_r2_t:"La votación cierra a fin de mes. Anunciamos al ganador el día 1.",
+       vt_r3_h:"El premio", vt_r3_t:"Un video promocional gratis en nuestro canal de YouTube y un espacio destacado en la página.",
+       tab_vote:"Votar", hs_h:"Vota por tu favorito", hs_p:"Todavía no hay ganador. El negocio con más votos este mes gana un video promocional gratis en nuestro canal de YouTube y un espacio destacado en la página.", hs_cta:"Votar ahora", va_h1:"Negocio del Mes", va_lede:"Elige tu negocio local favorito. Cada voto los acerca a un video promocional gratis y un espacio destacado en somoslakecounty.com.",
+       va_btn:"Votar", va_voted:"Votado", va_wait:"Mañana", va_share:"Compartir",
+       va_voted_text:"Tu voto por {name} ya cuenta. Regresa mañana para votar otra vez.",
+       ms_kicker:"Nuestra misión",
+       ms_h1:"Gratis. Siempre.",
+       ms_lede:"Somos Lake County existe para que los negocios locales lleguen a sus vecinos, sin costo. Así fue desde el primer día y así se va a quedar.",
+       ms_p1_h:"Gratis. Siempre.", ms_p1_t:"Registrar tu negocio no cuesta nada hoy y no va a costar nada el próximo año. Sin periodo de prueba, sin plan premium.",
+       ms_p2_h:"Sin comisión.", ms_p2_t:"Nunca nos quedamos con un porcentaje de tus ventas. Los clientes te llaman, te escriben y te pagan directo.",
+       ms_p3_h:"Nadie paga por salir primero.", ms_p3_t:"Ningún lugar se compra. Cada negocio tiene la misma tarjeta, los mismos botones y la misma oportunidad de ser encontrado.",
+       ms_body:"La taquería que sale de una cocina, el que detalla autos a domicilio, la artista que pinta encargos en su casa: ellos hacen que este condado se sienta como hogar. Nuestro trabajo es que sea fácil encontrarlos.",
+       ms_close_h:"Crecemos juntos",
+       ms_close_p:"Un negocio, un vecino, un compartido a la vez. Entre más participemos, más grande se hace Lake County.",
        ct_h1:"Dinos cómo lo estamos haciendo",
        ct_lede:"Este directorio es de la gente que aparece en él. Si algo falta, algo está mal o algo te gusta, queremos saberlo de tu parte.",
        ct_s1:"Escríbenos",
@@ -821,6 +1041,11 @@ const T = {
 };
 
 const SEED = [
+  { handle:"cheesemosa_co.", owner:"Jasmine", name:"Cheesemosa Co.", sub:"Charcuterie Boards", cat:"food", logo:"./logos/cheesemosa-co.png",
+    sells:"Custom charcuterie boards & grazing tables! We specialize in individual orders, corporate events & private events! Serving all of Lake & Kenosha County!",
+    sells_es:"¡Tablas de charcutería y mesas de botanas personalizadas! Nos especializamos en pedidos individuales, eventos corporativos y eventos privados. ¡Servimos a todo Lake County y Kenosha County!",
+    area:"Pickup & local delivery for a fee", area_es:"Recoger o entrega local con costo extra", phone:"2246377483",
+    hours:"Anytime", hours_es:"Cuando quieras" },
   { handle:"haloautodetailingg", owner:"Angel", name:"Halo Auto Detailing", cat:"services", logo:"./logos/halo-auto-detailing.jpeg",
     sells:"We are a car mobile detailing business! We come to you or you can come to us, serving in Lake County! If you are interested in getting your vehicle cleaned interior or exterior, we are happy to take your car in!",
     sells_es:"¡Somos un negocio móvil de detallado de autos! Vamos a donde estés o puedes venir con nosotros, sirviendo a Lake County. Si te interesa limpiar tu vehículo por dentro o por fuera, con gusto recibimos tu carro.",
@@ -840,7 +1065,7 @@ const SEED = [
     sells_es:"G&D Construction & Snow Removal ofrece servicios profesionales de construcción exterior y mejoras de propiedades: patios, muros de contención, fogatas, andadores, decks, asfalto y concreto para propiedades residenciales y comerciales. En invierno también ofrecemos manejo comercial de nieve y hielo — plowing, sal y mantenimiento del sitio para mantener las propiedades seguras y accesibles.",
     area:"", area_es:"", phone:"7735018699",
     hours:"Monday-Saturday: 6:30am-3:30pm", hours_es:"Lunes a sábado: 6:30am–3:30pm" },
-  { handle:"", owner:"Dalyne Yanez", sub:"Mulch and Landscape Supply", name:"G&D", cat:"services", logo:"./logos/gd-mulch.png", web:"https://gdmulchmaterials.com/",
+  { handle:"", owner:"Dalyne Yanez", sub:"Mulch and Landscape Supply", name:"G&D Mulch & Landscape", cat:"services", logo:"./logos/gd-mulch.png", web:"https://gdmulchmaterials.com/",
     sells:"Premium triple ground mulch, fine mulch, leaf mulch, wood chips, and landscape materials delivered to your residential or commercial property across Lake County, IL. Quality product. Reliable delivery. Fair pricing.",
     sells_es:"Mulch premium triple molido, mulch fino, mulch de hoja, astillas de madera y materiales de paisajismo entregados a tu propiedad residencial o comercial en todo Lake County, IL. Producto de calidad. Entrega confiable. Precio justo.",
     area:"Delivery 24-48 hour advance notice.", area_es:"Entrega con 24–48 horas de anticipación.", phone:"7735018699",
@@ -874,22 +1099,7 @@ const SEED = [
     sells:"We specialize in electronics soldering and repairing. From crack screen to integrated circuit issue we can help. JLfix",
     sells_es:"Nos especializamos en soldadura y reparación de electrónicos. Desde pantallas quebradas hasta problemas de circuito integrado, podemos ayudar. JLfix",
     area:"Pick up", area_es:"Recoger", phone:"2246367149",
-    hours:"Tuesday to Saturday 10-5pm", hours_es:"Martes a sábado 10–5pm" },
-  { handle:"tamales.doncheto", name:"Tamales Don Cheto", cat:"food", sells:"Tamales by the dozen — pork, chicken, rajas, sweet. Weekend pre-orders only.", sells_es:"Tamales por docena — puerco, pollo, rajas, dulces. Solo pedidos de fin de semana.", area:"Pickup Saturday mornings, south Waukegan", area_es:"Recoger sábados por la mañana, sur de Waukegan", phone:"2245550188", hours:"Thursday & Friday", hours_es:"Jueves y viernes" },
-  { handle:"dulcesbymari", name:"Dulces by Mari", cat:"food", sells:"Tres leches, flan, chocolate-covered strawberries. Custom cakes with 3 days notice.", sells_es:"Tres leches, flan, fresas con chocolate. Pasteles a pedido con 3 días.", area:"Pickup near Belvidere & Lewis, or delivery in Waukegan for $5", area_es:"Recoger cerca de Belvidere y Lewis, o entrega en Waukegan por $5", phone:"2245550142", hours:"Weekdays after 4pm", hours_es:"Días de semana después de las 4pm" },
-  { handle:"nailsbyjazz_wkgn", name:"Nails by Jazz", cat:"beauty", sells:"Acrylic sets, gel-x, nail art. Home studio, appointment only.", sells_es:"Acrílicos, gel-x, arte en uñas. Estudio en casa, solo con cita.", area:"Home studio off Grand Ave", area_es:"Estudio en casa cerca de Grand Ave", phone:"2245550119", hours:"Anytime, DM is fastest", hours_es:"Cualquier hora, el DM es más rápido" },
-  { handle:"thriftedby.ang", name:"Thrifted by Ang", cat:"clothing", sells:"Vintage tees, Levi's, sneakers. New drops every Sunday night.", sells_es:"Playeras vintage, Levi's, tenis. Nuevo cada domingo por la noche.", area:"Meet up at Waukegan Public Library or ship", area_es:"Nos vemos en la biblioteca de Waukegan o envío", phone:"", hours:"Evenings", hours_es:"Por las tardes" },
-  { handle:"lupitas.elotes", name:"Lupita's Elotes", cat:"food", sells:"Elotes, esquites, tostilocos, raspados. Also books small events.", sells_es:"Elotes, esquites, tostilocos, raspados. También eventos pequeños.", area:"Cart at Bowen Park weekends; catering by request", area_es:"Carrito en Bowen Park los fines de semana; catering a pedido", phone:"2245550163", hours:"Mornings", hours_es:"Por las mañanas" },
-  { handle:"crochetby.rosa", name:"Crochet by Rosa", cat:"art", sells:"Crochet blankets, baby sets, plushies, custom colors.", sells_es:"Cobijas de crochet, ajuares de bebé, peluches, colores a pedido.", area:"Pickup in Waukegan or ships anywhere", area_es:"Recoger en Waukegan o envío a cualquier lado", phone:"", hours:"Anytime", hours_es:"Cualquier hora" },
-  { handle:"jr.partyrentals", name:"JR Party Rentals", cat:"party", sells:"Tables, chairs, bounce houses, canopies. Delivery and setup included.", sells_es:"Mesas, sillas, brincolines, carpas. Entrega e instalación incluidas.", area:"Delivers across Lake County", area_es:"Entrega en todo Lake County", phone:"2245550177", hours:"Weekdays 9am–7pm", hours_es:"Días de semana 9am–7pm" },
-  { handle:"pasteles.sofi", name:"Pasteles Sofi", cat:"food", sells:"Quinceañera and wedding cakes, cupcakes, cake pops. Tastings available.", sells_es:"Pasteles de quinceañera y boda, cupcakes, cake pops. Hay degustación.", area:"Pickup near Washington St", area_es:"Recoger cerca de Washington St", phone:"2245550154", hours:"Afternoons", hours_es:"Por las tardes" },
-  { handle:"barberia.luis47", name:"Luis the Barber", cat:"beauty", sells:"Cuts, fades, beard work. Chair at home shop, walk-ins if open.", sells_es:"Cortes, fades, barba. Silla en casa, sin cita si está abierto.", area:"Home shop, north Waukegan", area_es:"Local en casa, norte de Waukegan", phone:"2245550131", hours:"Tue–Sat", hours_es:"Mar–Sáb" },
-  { handle:"birria.los.primos", name:"Birria Los Primos", cat:"food", sells:"Birria de res by the pound, quesabirria tacos, consomé. Friday–Sunday.", sells_es:"Birria de res por libra, quesabirrias, consomé. Viernes a domingo.", area:"Pickup only, near 10th St", area_es:"Solo recoger, cerca de 10th St", phone:"2245550196", hours:"Thursday to pre-order", hours_es:"Jueves para pedir" },
-  { handle:"velas.y.aromas", name:"Velas y Aromas", cat:"art", sells:"Hand-poured soy candles, wax melts, custom scents for events.", sells_es:"Velas de soya hechas a mano, wax melts, aromas para eventos.", area:"Pickup or local delivery", area_es:"Recoger o entrega local", phone:"", hours:"Evenings", hours_es:"Por las tardes" },
-  { handle:"detailing.by.omar", name:"Detailing by Omar", cat:"services", sells:"Mobile car detailing — interior, exterior, engine bay. He comes to you.", sells_es:"Detallado de autos a domicilio — interior, exterior, motor. Él va a ti.", area:"Mobile, Waukegan and Gurnee", area_es:"A domicilio, Waukegan y Gurnee", phone:"2245550108", hours:"Weekends", hours_es:"Fines de semana" },
-  { handle:"floresby.karla", name:"Flores by Karla", cat:"party", sells:"Fresh flower bouquets, ramos buchones, centerpieces.", sells_es:"Ramos de flores frescas, ramos buchones, centros de mesa.", area:"Pickup near Sheridan Rd", area_es:"Recoger cerca de Sheridan Rd", phone:"2245550172", hours:"Mornings", hours_es:"Por las mañanas" },
-  { handle:"cartas.locas.tcg", name:"Cartas Locas TCG", cat:"tcg", sells:"Pokémon, One Piece and sports card singles, sealed packs, trades welcome. Card show table monthly.", sells_es:"Cartas sueltas de Pokémon, One Piece y deportes, paquetes sellados, se aceptan cambios. Mesa en el card show cada mes.", area:"Meet up at Gurnee Mills food court, or ship", area_es:"Nos vemos en el food court de Gurnee Mills, o envío", phone:"2245550177", hours:"Evenings & weekends", hours_es:"Tardes y fines de semana" },
-  { handle:"gorditas.mama.chuy", name:"Gorditas Mamá Chuy", cat:"food", sells:"Gorditas de chicharrón, picadillo, frijol. Fresh masa daily.", sells_es:"Gorditas de chicharrón, picadillo, frijol. Masa fresca a diario.", area:"Pickup, ask for address in DM", area_es:"Recoger, pide la dirección por DM", phone:"", hours:"Mornings until sold out", hours_es:"Mañanas hasta agotarse" }
+    hours:"Tuesday to Saturday 10-5pm", hours_es:"Martes a sábado 10–5pm" }
 ];
 
 /* Facebook pages, where the business has one (many are IG-only) */
@@ -927,21 +1137,13 @@ const kindOf = id => KINDS.find(k => k.id === id) || KINDS[0];
 const CONTACT_EMAIL = "marcoaguilarseo@gmail.com";
 
 const EVENTS = [
-  { id:"mexican-independence-festival", kind:"festival", name:"Mexican Independence Festival 2026", name_es:"Festival Independencia de México 2026",
-    date:"2026-09-12", dateEnd:"", start:"12:00", end:"22:00",
-    place:"On The Rocks, Waukegan Harbor & Marina", city:"Waukegan", addr:"175 S Harbor Pl, Waukegan, IL 60085",
-    cost:"Free admission", cost_es:"Entrada gratis", host:"Lake County Cultural Association NFP", host_es:"Lake County Cultural Association NFP",
+  { id:"fiesta-sin-frontera-2026", kind:"festival", name:"Fiesta Sin Frontera 2026", name_es:"Fiesta Sin Frontera 2026",
+    date:"2026-09-26", dateEnd:"", start:"11:00", end:"23:00",
+    place:"Downtown Waukegan", city:"Waukegan", addr:"32 N Genesee St, Waukegan, IL 60085",
+    cost:"", cost_es:"", host:"", host_es:"",
     contact:"", spots:false, link:"",
-    desc:"El Grito by the harbor — Mariachi Nuevo México, La Nueva Sonora Santanera, Descontrol, ballet folklórico, Chinelos de Morelos, and Danza Quetzalcóatl, plus antique cars and food all day. Bring your own folding chair.",
-    desc_es:"El Grito junto al puerto — Mariachi Nuevo México, La Nueva Sonora Santanera, Descontrol, ballet folklórico, Chinelos de Morelos y Danza Quetzalcóatl, además de autos antiguos y comida todo el día. Lleva tu propia silla plegable." },
-
-  { id:"vernon-hills-card-expo", kind:"cards", name:"Vernon Hills Monthly Card Expo", name_es:"Expo Mensual de Cartas de Vernon Hills",
-    date:"2026-09-13", dateEnd:"", start:"10:00", end:"16:00",
-    place:"Hawthorn Mall", city:"Vernon Hills", addr:"122 Hawthorn Center, Vernon Hills, IL 60061",
-    cost:"Free entry", cost_es:"Entrada gratis", host:"Lake County Card Collectors", host_es:"Lake County Card Collectors",
-    contact:"2245550155", spots:true, link:"",
-    desc:"Monthly show for Pokémon, One Piece and sports cards — singles, sealed packs, grading talk, and live trades all day. Kid-friendly; bring your binder.",
-    desc_es:"Expo mensual de cartas de Pokémon, One Piece y deportes — cartas sueltas, paquetes sellados y cambios en vivo todo el día. Para toda la familia; trae tu carpeta." },
+    desc:"Come celebrate the fiestas patrias on Saturday, September 26, from 11AM to 11PM in Downtown Waukegan! Antojitos, live music, folklórico from different countries, face paint, chinelos and much more.",
+    desc_es:"Ven a celebrar las fiestas patrias Sábado, 26 de Septiembre de 11AM -11PM en Downtown Waukegan! Tendremos antojitos, música en vivo, folklorico de diferentes países, face paint, chinelos y mucho más!" },
 
   { id:"vernon-hills-card-expo-oct", kind:"cards", name:"Vernon Hills Monthly Card Expo", name_es:"Expo Mensual de Cartas de Vernon Hills",
     date:"2026-10-11", dateEnd:"", start:"10:00", end:"16:00",
@@ -958,38 +1160,6 @@ const EVENTS = [
     contact:"2245550155", spots:true, link:"",
     desc:"November edition of the monthly card show at Hawthorn Mall — singles, sealed packs, grading talk, and live trades all day. Kid-friendly; bring your binder.",
     desc_es:"Edición de noviembre de la expo mensual de cartas en Hawthorn Mall — cartas sueltas, paquetes sellados y cambios en vivo todo el día. Para toda la familia; trae tu carpeta." },
-
-  { id:"kermes-santa-maria", kind:"kermes", name:"Kermés de Santa María", name_es:"Kermés de Santa María",
-    date:"2026-08-22", dateEnd:"2026-08-23", start:"12:00", end:"22:00",
-    place:"Holy Family Parish", city:"Waukegan", addr:"450 Keller Ave, Waukegan, IL 60085",
-    cost:"Free entry", cost_es:"Entrada gratis", host:"Holy Family Parish", host_es:"Parroquia Holy Family",
-    contact:"2245550100", spots:true, link:"https://facebook.com/events/kermes-santa-maria",
-    desc:"Two days of food booths, a raffle, and banda every night at seven. Most of the food is cooked by families from the parish, and everything raised goes to the roof fund.",
-    desc_es:"Dos días de puestos de comida, rifa y banda cada noche a las siete. Casi toda la comida la cocinan familias de la parroquia, y lo recaudado va al fondo del techo." },
-
-  { id:"mercadito-nocturno", kind:"market", name:"Mercadito Nocturno", name_es:"Mercadito Nocturno",
-    date:"2026-08-29", dateEnd:"", start:"17:00", end:"22:00",
-    place:"Downtown Waukegan, Genesee St", city:"Waukegan", addr:"Genesee St & Washington St, Waukegan, IL 60085",
-    cost:"Free entry", cost_es:"Entrada gratis", host:"Waukegan Main Street", host_es:"Waukegan Main Street",
-    contact:"2245550111", spots:true, link:"",
-    desc:"Forty-plus home vendors on a closed block — food, resale racks, crochet, candles, nails. Live music at the Genesee end, kids' rides at the other.",
-    desc_es:"Más de cuarenta vendedores caseros en una cuadra cerrada — comida, ropa de reventa, crochet, velas, uñas. Música en vivo por Genesee y juegos para niños del otro lado." },
-
-  { id:"fiestas-patrias", kind:"festival", name:"Fiestas Patrias Waukegan", name_es:"Fiestas Patrias Waukegan",
-    date:"2026-09-13", dateEnd:"", start:"11:00", end:"21:00",
-    place:"Bowen Park", city:"Waukegan", addr:"1911 N Sheridan Rd, Waukegan, IL 60087",
-    cost:"Free entry", cost_es:"Entrada gratis", host:"City of Waukegan", host_es:"Ciudad de Waukegan",
-    contact:"2245550122", spots:false, link:"https://facebook.com/events/fiestas-patrias-waukegan",
-    desc:"El grito at eight, folklórico all afternoon, and the biggest food row of the year. Come early — parking on Sheridan fills by noon.",
-    desc_es:"El grito a las ocho, folklórico toda la tarde, y la fila de comida más grande del año. Llega temprano — el estacionamiento en Sheridan se llena para el mediodía." },
-
-  { id:"round-lake-market", kind:"market", name:"Round Lake Farmers Market", name_es:"Mercado de Round Lake",
-    date:"2026-09-19", dateEnd:"", start:"08:00", end:"13:00",
-    place:"Rollins Savanna lot", city:"Round Lake", addr:"5185 Fairfield Rd, Grayslake, IL 60030",
-    cost:"Free entry", cost_es:"Entrada gratis", host:"Round Lake Area Chamber", host_es:"Cámara de Round Lake",
-    contact:"2245550133", spots:true, link:"",
-    desc:"Saturday morning market with room for a dozen home vendors alongside the growers. Tables are first come, first served if you ask by Thursday.",
-    desc_es:"Mercado de sábado por la mañana con espacio para una docena de vendedores caseros junto a los agricultores. Las mesas son por orden de llegada si preguntas antes del jueves." },
 
   { id:"dia-de-muertos", kind:"festival", name:"Día de los Muertos Fest", name_es:"Fiesta de Día de Muertos",
     date:"2026-11-01", dateEnd:"", start:"14:00", end:"21:00",
@@ -1013,15 +1183,7 @@ const EVENTS = [
     cost:"$2 at the door", cost_es:"$2 en la entrada", host:"Zion Park District", host_es:"Distrito de Parques de Zion",
     contact:"2245550166", spots:true, link:"",
     desc:"Indoor bazaar built for handmade sellers — crochet, candles, baked goods, jewelry. Eighty tables, heated hall, load-in from seven.",
-    desc_es:"Bazar bajo techo hecho para vendedores artesanales — crochet, velas, panadería, joyería. Ochenta mesas, salón con calefacción, entrada de carga desde las siete." },
-
-  { id:"gurnee-popup", kind:"popup", name:"Sunday Resale Pop-Up", name_es:"Pop-Up de Reventa Dominical",
-    date:"2026-09-06", dateEnd:"", start:"11:00", end:"16:00",
-    place:"Viking Park pavilion", city:"Gurnee", addr:"4374 Old Grand Ave, Gurnee, IL 60031",
-    cost:"Free entry", cost_es:"Entrada gratis", host:"Thrifted by Ang", host_es:"Thrifted by Ang",
-    contact:"2245550199", spots:false, link:"https://instagram.com/thriftedby.ang",
-    desc:"Six resale sellers under one pavilion — vintage tees, denim, sneakers, kids' clothes. Cash and Zelle, no holds.",
-    desc_es:"Seis vendedores de reventa bajo un mismo techo — playeras vintage, mezclilla, tenis, ropa de niños. Efectivo y Zelle, sin apartados." }
+    desc_es:"Bazar bajo techo hecho para vendedores artesanales — crochet, velas, panadería, joyería. Ochenta mesas, salón con calefacción, entrada de carga desde las siete." }
 ];
 
 const MON = { en:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
@@ -1055,7 +1217,7 @@ const tint = (hex, a) => {
 };
 const CRITERIA = {
   "New this week":       { en:"New this week",        es:"Nuevo esta semana" },
-  "Vendor of the week":  { en:"Vendor of the week",   es:"Negocio de la semana" },
+  "Vendor of the week":  { en:"Vendor of the month",  es:"Negocio del mes" },
   "Selling this weekend":{ en:"Selling this weekend", es:"Vende este fin de semana" },
   "Neighbor favorite":   { en:"Neighbor favorite",    es:"Favorito del barrio" }
 };
@@ -1087,6 +1249,12 @@ class Component extends DCLogic {
     this._fit = fit;
     window.addEventListener("resize", fit);
     CATS.forEach(c => { if (c.src){ const im = new Image(); im.src = c.src; } });
+    try {
+      const d = localStorage.getItem("wlc_vote_day"); if (d) this.setState({ votedDay:d, votedSlug: localStorage.getItem("wlc_vote_slug") || "" });
+      const q = new URLSearchParams(window.location.search).get("vote");
+      if (q === "all") this.setState({ view:"voteall" });
+      else if (q && SEED.some(v => (v.owner || v.logo) && slugify(v.handle || v.name) === q)) this.setState({ view:"vote", slug:q });
+    } catch(e){}
   }
   componentWillUnmount(){ if (this._fit) window.removeEventListener("resize", this._fit); }
 
@@ -1111,6 +1279,22 @@ class Component extends DCLogic {
     if (role === "right")  return { ...base, ...box(m?0.15:0.26), transform:"translateX(-50%)", transformOrigin:"bottom center", filter:"blur(2px)", opacity:.85, zIndex:10, left:m?"82%":"72%", bottom:m?"33%":"13%" };
     if (role === "back")   return { ...base, ...box(m?0.12:0.20), transform:"translateX(-50%)", transformOrigin:"bottom center", filter:"blur(4px)", opacity:1, zIndex:5, left:"50%", bottom:m?"33%":"13%" };
     return { ...base, ...box(m?0.12:0.20), transform:"translateX(-50%)", transformOrigin:"bottom center", filter:"blur(6px)", opacity:0, zIndex:1, left:"50%", bottom:m?"33%":"13%" };
+  }
+
+  /* One vote per device per day; each vote is a Forminit submission tagged form_type "Vendor of the Month vote". */
+  castVote(vr){
+    const now = new Date(), day = now.toDateString();
+    try { if (localStorage.getItem("wlc_vote_day") === day) { this.setState({ votedDay:day }); return; } localStorage.setItem("wlc_vote_day", day); } catch(e){}
+    try { localStorage.setItem("wlc_vote_slug", vr.slug); } catch(e){}
+    this.setState({ votedDay:day, votedSlug:vr.slug });
+    const fd = new FormData();
+    fd.append("fi-text-form_type", "Vendor of the Month vote");
+    fd.append("fi-text-vendor", vr.name);
+    fd.append("fi-text-slug", vr.slug);
+    fd.append("fi-text-month", now.getFullYear() + "-" + String(now.getMonth()+1).padStart(2,"0"));
+    fd.append("fi-text-lang", this.state.lang);
+    fetch("https://forminit.com/f/xfgogqzx7ly", { method:"POST", body:fd, headers:{ "Accept":"application/json" } })
+      .catch(err => console.warn("[wearelakecounty] vote failed:", err));
   }
 
   /* Submissions POST to Forminit (form ID xfgogqzx7ly); files ride along as multipart. */
@@ -1150,7 +1334,7 @@ class Component extends DCLogic {
 
     const rows = SEED.map(v => ({
       ...v, slug: slugify(v.handle || v.name), fb: v.fb || FB[v.handle] || "", web: v.web || WEB[v.handle] || "", logo: v.logo || "", color: tint(catOf(v.cat).bg, .55),
-      initials: initials(v.name)
+      initials: initials(v.name), real: !!(v.owner || v.logo)
     }));
 
     const roleOf = k => k===i ? "center" : k===(i+n-1)%n ? "left" : k===(i+1)%n ? "right" : k===(i+2)%n ? "back" : "hidden";
@@ -1209,7 +1393,7 @@ class Component extends DCLogic {
     /* ---- spotlight: one pick, one stated reason ---- */
     const critKey = this.props.spotlightCriteria || "Vendor of the week";
     const crit = CRITERIA[critKey] || CRITERIA["Vendor of the week"];
-    const sp = rows.find(v => v.slug === (this.props.spotlightPick || "birria-los-primos")) || rows[0];
+    const sp = rows.find(v => v.slug === (this.props.spotlightPick || "cheesemosa-co")) || rows[0];
     const spc = catOf(sp.cat);
     const spotMeta = [es ? sp.area_es : sp.area, es ? sp.hours_es : sp.hours].filter(Boolean).join(" · ");
 
@@ -1220,6 +1404,11 @@ class Component extends DCLogic {
     if (vr.phone) vRows.push({ k:c.phone, v: prettyPhone(vr.phone) });
     if (vr.owner) vRows.push({ k: es ? "Quién atiende" : "Who to ask for", v: vr.owner });
     const vcc = CATS.find(x => x.id === vr.cat) || {};
+    const now = new Date();
+    const monthKey = now.getFullYear() + "-" + (now.getMonth()+1);
+    const monthName = now.toLocaleString(es ? "es-MX" : "en-US", { month:"long" });
+    const voteUrl = "https://wearelakecounty.com/?vote=" + vr.slug;
+    const votedToday = this.state.votedDay === now.toDateString();
 
     /* ---- events ---- */
     const { evKind, evSlug } = this.state;
@@ -1275,6 +1464,45 @@ class Component extends DCLogic {
       isEvents: view === "events", isEvent: view === "event",
       isSubmit: view === "submit", isSubmitEvent: view === "submit-event",
       isContact: view === "contact",
+      isMission: view === "mission",
+      isVote: view === "vote",
+      isVoteAll: view === "voteall",
+      goVoteAll: e => { if (e) e.preventDefault(); this.go("voteall"); },
+      tabVoteStyle: tabStyle(view === "voteall" || view === "vote"),
+      ballot: rows.filter(v => v.real).map(v => {
+        const cc = catOf(v.cat), mine = votedToday && this.state.votedSlug === v.slug;
+        return { key:v.slug, name:v.name, cat: es ? cc.es : cc.en, initials:v.initials, logo:v.logo, hasLogo:!!v.logo,
+          band:{ display:"flex", alignItems:"center", gap:"14px", padding:"16px", background:tint(cc.bg,.55), borderBottom:"3px solid #16151A" },
+          disabled: votedToday, btnLabel: mine ? "✓ " + c.va_voted : votedToday ? c.va_wait : "★ " + c.va_btn,
+          btnStyle:{ flex:1, minHeight:"50px", fontFamily:"'Anton',sans-serif", fontSize:"19px", textTransform:"uppercase", letterSpacing:".02em",
+            background: mine ? "#16151A" : votedToday ? "#EDE6DC" : "#F2C14E", color: mine ? "#F2C14E" : "#16151A",
+            border:"3px solid #16151A", borderRadius:"14px", cursor: votedToday ? "default" : "pointer", opacity: votedToday && !mine ? .6 : 1 },
+          onVote: () => this.castVote(v),
+          onOpen: e => { e.preventDefault(); this.go("vote", { slug:v.slug, copied:false }); } };
+      }),
+      goVote: e => { if (e) e.preventDefault(); this.go("vote", { copied:false }); },
+      goVendorFromVote: e => { if (e) e.preventDefault(); this.go("vendor"); },
+      castVote: () => { if (vr.real) this.castVote(vr); },
+      copyVoteLink: () => {
+        const u = voteUrl;
+        const done = () => this.setState({ copied:true });
+        if (navigator.share && mobile) navigator.share({ title: c.vt_kicker, url:u }).catch(()=>{});
+        else if (navigator.clipboard) navigator.clipboard.writeText(u).then(done, done);
+        else done();
+      },
+      vote:{
+        month: monthName, title: vr.name, url: voteUrl,
+        canVote: !votedToday, voted: votedToday, doneText: c.vt_done,
+        votedText: c.va_voted_text.replace("{name}", (rows.find(v => v.slug === this.state.votedSlug) || {}).name || ""),
+        fbShare: "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(voteUrl),
+        copyLabel: this.state.copied ? c.vt_copied : c.vt_copy,
+        rules: [1,2,3].map(k => ({ key:k, n:k, h:c["vt_r"+k+"_h"], t:c["vt_r"+k+"_t"] }))
+      },
+      goMission: e => { if (e) e.preventDefault(); this.go("mission"); },
+      msCastCols: "grid-template-columns:repeat(" + (mobile ? 4 : 8) + ",minmax(0,1fr))",
+      msCast: CATS.map(x => ({ key:x.id, src:x.src, word: es ? x.word_es : x.word_en, label: es ? x.es : x.en,
+        tile:{ position:"absolute", left:0, right:0, bottom:0, height:"72%", background:x.bg, border:"3px solid #16151A", borderRadius:"18px 18px 12px 12px" } })),
+      msPromises: [1,2,3].map(k => ({ key:k, h:c["ms_p"+k+"_h"], t:c["ms_p"+k+"_t"] })),
       isEs: this.state.lang === "es",
       contactEmail: CONTACT_EMAIL,
       mailtoPlain: "mailto:" + CONTACT_EMAIL,
@@ -1294,7 +1522,7 @@ class Component extends DCLogic {
       heroStyle:{ backgroundColor: active.bg, transition:"background-color 650ms cubic-bezier(.4,0,.2,1)" },
       vHeadStyle:{ background: vcc.bg, borderBottom:"3px solid #16151A" },
       active:{ word: es ? active.word_es : active.word_en, label: es ? active.es : active.en, desc: es ? active.d_es : active.d_en },
-      slides, chain: rows.concat(rows).map(v => "@"+v.handle),
+      slides, chain: rows.concat(rows).map(v => v.handle ? "@"+v.handle : v.name),
       spotBandStyle:{ background: tint(spc.bg, .28), borderTop:"3px solid #16151A", borderBottom:"3px solid #16151A" },
       spotGridStyle:{
         position:"relative", maxWidth:"1180px", margin:"0 auto", padding:"34px 16px 38px",
@@ -1316,12 +1544,13 @@ class Component extends DCLogic {
       isEmpty: filtered.length === 0,
       vendor:{
         at: vr.handle ? "@"+vr.handle : vr.name, name: vr.handle ? vr.name : (vr.sub || vr.owner || ""), cat: es ? vcc.es : vcc.en, color:vr.color, initials:vr.initials, logo:vr.logo, hasLogo:!!vr.logo,
-        handle:!!vr.handle, phone:!!vr.phone, fb:!!vr.fb, fbUrl:vr.fb, web:!!vr.web, webUrl:vr.web,
+        real:!!vr.real, handle:!!vr.handle, phone:!!vr.phone, fb:!!vr.fb, fbUrl:vr.fb, web:!!vr.web, webUrl:vr.web,
         rows:vRows.map((r,k)=>({ ...r, key:k })),
         igUrl:"https://instagram.com/"+vr.handle, smsUrl:"sms:+1"+vr.phone, telUrl:"tel:+1"+vr.phone
       },
       tabVendorStyle: tabStyle(view === "home" || view === "vendor" || view === "submit"),
       tabEventStyle: tabStyle(view === "events" || view === "event" || view === "submit-event"),
+      tabMissionStyle: tabStyle(view === "mission"),
 
       evChips, events: evFiltered.map(evCard),
       eHeadStyle:{ background: ekk.bg, borderBottom:"3px solid #16151A" },
