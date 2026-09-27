@@ -144,8 +144,8 @@
 
 <ul style="list-style:none;margin:0 auto;padding:20px 16px 56px;max-width:1180px;display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:18px">
   <sc-for list="{{ vendors }}" as="v" hint-placeholder-count="6">
-    <li>
-      <a href="#vendor" onClick="{{ v.onClick }}" style="display:block;background:#fff;border:3px solid #16151A;border-radius:20px;overflow:hidden;box-shadow:6px 6px 0 #16151A;transition:transform 150ms,box-shadow 150ms" style-hover="transform:translate(-3px,-3px);box-shadow:9px 9px 0 #16151A;color:#16151A">
+    <li style="display:flex">
+      <a href="#vendor" onClick="{{ v.onClick }}" style="display:block;width:100%;background:#fff;border:3px solid #16151A;border-radius:20px;overflow:hidden;box-shadow:6px 6px 0 #16151A;transition:transform 150ms,box-shadow 150ms" style-hover="transform:translate(-3px,-3px);box-shadow:9px 9px 0 #16151A;color:#16151A">
         <div style="position:relative;aspect-ratio:4/3;border-bottom:3px solid #16151A">
           <div style="position:absolute;inset:0;display:grid;place-items:center;background:{{ v.color }}">
             <span style="font-family:'Anton',sans-serif;font-size:52px;color:#16151A;opacity:.82;letter-spacing:.02em">{{ v.initials }}</span>
@@ -158,7 +158,7 @@
         <div style="padding:14px 15px 17px">
           <p style="margin:0;font-size:17px;font-weight:900;letter-spacing:-.01em">{{ v.at }}</p>
           <p style="margin:2px 0 8px;font-size:13px;font-weight:600;opacity:.6">{{ v.name }}</p>
-          <p style="margin:0;font-size:13.5px;line-height:1.5;text-wrap:pretty;opacity:.85">{{ v.sells }}</p>
+          <p style="margin:0;font-size:13.5px;line-height:1.5;height:81px;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;text-wrap:pretty;opacity:.85">{{ v.sells }}</p>
         </div>
       </a>
     </li>
@@ -1099,7 +1099,12 @@ const SEED = [
     sells:"We specialize in electronics soldering and repairing. From crack screen to integrated circuit issue we can help. JLfix",
     sells_es:"Nos especializamos en soldadura y reparación de electrónicos. Desde pantallas quebradas hasta problemas de circuito integrado, podemos ayudar. JLfix",
     area:"Pick up", area_es:"Recoger", phone:"2246367149",
-    hours:"Tuesday to Saturday 10-5pm", hours_es:"Martes a sábado 10–5pm" }
+    hours:"Tuesday to Saturday 10-5pm", hours_es:"Martes a sábado 10–5pm" },
+  { handle:"SipMix_onthego", owner:"Rosie Nino", name:"SipMix", sub:"On-the-Go Refreshers", cat:"food", logo:"./logos/sipmix.png", web:"https://msha.ke/sipmix",
+    sells:"Whether you're grinding at work, running errands, or taking a breather in your car I pull up, you sip, and suddenly you're right back in your groove. ✨ Natural Energy ✨ Mental Focus ✨ Hydration ✨ Good Mood ✨ Amazing Flavors 💗 Collagen + more goodness. This isn't just a drink it's a refresher with benefits. No guilt, no crash, and perfect for the whole family. Because you deserve a boost, a pick-me-up, a moment that's just for you. Your daily dose, delivered. Because you matter too. 📦 Home + Work Delivery 📱 Text your order: WhatsApp 224-214-7454 🚐 Routes every Thursday & Friday ✨ Saturday. Preferably Pre-orders delivered the next day and pay when it's delivered",
+    sells_es:"Ya sea que estés trabajando duro, haciendo mandados o tomando un respiro en tu carro, yo llego, tú tomas, y de repente vuelves a tu ritmo. ✨ Energía natural ✨ Enfoque mental ✨ Hidratación ✨ Buen humor ✨ Sabores increíbles 💗 Colágeno y más. No es solo una bebida, es un refresco con beneficios. Sin culpa, sin bajón y perfecto para toda la familia. Porque mereces un impulso, un momento solo para ti. Tu dosis diaria, a domicilio. Porque tú también importas. 📦 Entrega a casa y trabajo 📱 Pide por WhatsApp 224-214-7454 🚐 Rutas jueves y viernes ✨ sábado. De preferencia pedidos anticipados, entregados al día siguiente y pagas al recibir",
+    area:"Deliver Thursday, Friday, Saturday", area_es:"Entrega jueves, viernes y sábado", phone:"2242147453",
+    hours:"Preorder delivery the next day 9-2pm", hours_es:"Pedidos anticipados, entrega al día siguiente 9–2pm" }
 ];
 
 /* Facebook pages, where the business has one (many are IG-only) */
@@ -1134,7 +1139,7 @@ const KINDS = [
   { id:"cards",    en:"Card show",       es:"Expo de cartas",  bg:"#C9A5F0" }
 ];
 const kindOf = id => KINDS.find(k => k.id === id) || KINDS[0];
-const CONTACT_EMAIL = "marcoaguilarseo@gmail.com";
+const CONTACT_EMAIL = "wearelakecounty@gmail.com";
 
 const EVENTS = [
   { id:"fiesta-sin-frontera-2026", kind:"festival", name:"Fiesta Sin Frontera 2026", name_es:"Fiesta Sin Frontera 2026",
