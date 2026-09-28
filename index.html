@@ -9,6 +9,8 @@
 <x-dc>
 <helmet>
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6L2Y3GNJ4C"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-6L2Y3GNJ4C');</script>
 <link rel="icon" type="image/png" href="./favicon.png">
 <meta name="description" content="A free bilingual directory of Lake County, IL home-run businesses — tamales, cakes, nails, resale, party rentals — and the kermeses, mercaditos and markets that bring them together.">
 <meta property="og:type" content="website">
@@ -154,6 +156,9 @@
             </sc-if>
           </div>
           <span style="position:absolute;left:10px;bottom:10px;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;background:#fff;border:2px solid #16151A;border-radius:999px;padding:4px 9px">{{ v.cat }}</span>
+          <sc-if value="{{ v.isNew }}" hint-placeholder-val="{{ false }}">
+            <span style="position:absolute;right:10px;top:10px;font-family:'Anton',sans-serif;font-size:16px;text-transform:uppercase;letter-spacing:.03em;background:#F2C14E;color:#16151A;border:2px solid #16151A;border-radius:999px;padding:4px 12px;box-shadow:3px 3px 0 #16151A;transform:rotate(4deg)">★ {{ v.newLabel }}</span>
+          </sc-if>
         </div>
         <div style="padding:14px 15px 17px">
           <p style="margin:0;font-size:17px;font-weight:900;letter-spacing:-.01em">{{ v.at }}</p>
@@ -912,7 +917,7 @@ const T = {
        vt_fb:"Share on Facebook", vt_copy:"Copy link", vt_copied:"Link copied",
        vt_r1_h:"Vote every day", vt_r1_t:"Everyone gets one vote per day until the end of the month.",
        vt_r2_h:"Most votes wins", vt_r2_t:"Voting closes at the end of the month. We announce the winner on the 1st.",
-       vt_r3_h:"The prize", vt_r3_t:"A free promo video on our YouTube channel and a spotlight on the website.",
+       vt_r3_h:"The prize", vt_r3_t:"A free promo video on our YouTube channel: shot in 4K, with a mic'd interview, product sampling and a full walkthrough of your business, shared on Facebook, Instagram and TikTok. Plus a month at the top of our homepage, seen by 100+ visitors a day, with a winner badge and your video on your listing.",
        tab_vote:"Vote", hs_h:"Vote for your favorite", hs_p:"No winner yet. The business with the most votes this month gets a free promo video on our YouTube channel and a spotlight on the website.", hs_cta:"Vote now", va_h1:"Vendor of the Month", va_lede:"Pick your favorite local business. Every vote gets them closer to a free promo video and a spotlight on wearelakecounty.com.",
        va_btn:"Vote", va_voted:"Voted", va_wait:"Tomorrow", va_share:"Share",
        va_voted_text:"Your vote for {name} is in. Come back tomorrow to vote again.",
@@ -1006,7 +1011,7 @@ const T = {
        vt_fb:"Compartir en Facebook", vt_copy:"Copiar enlace", vt_copied:"Enlace copiado",
        vt_r1_h:"Vota cada día", vt_r1_t:"Cada persona tiene un voto por día hasta fin de mes.",
        vt_r2_h:"Gana el que tenga más votos", vt_r2_t:"La votación cierra a fin de mes. Anunciamos al ganador el día 1.",
-       vt_r3_h:"El premio", vt_r3_t:"Un video promocional gratis en nuestro canal de YouTube y un espacio destacado en la página.",
+       vt_r3_h:"El premio", vt_r3_t:"Un video promocional gratis en nuestro canal de YouTube: grabado en 4K, con entrevista con micrófono, prueba de tus productos y un recorrido completo de tu negocio, compartido en Facebook, Instagram y TikTok. Además, un mes arriba en nuestra página, vista por más de 100 personas al día, con insignia de ganador y tu video en tu perfil.",
        tab_vote:"Votar", hs_h:"Vota por tu favorito", hs_p:"Todavía no hay ganador. El negocio con más votos este mes gana un video promocional gratis en nuestro canal de YouTube y un espacio destacado en la página.", hs_cta:"Votar ahora", va_h1:"Negocio del Mes", va_lede:"Elige tu negocio local favorito. Cada voto los acerca a un video promocional gratis y un espacio destacado en somoslakecounty.com.",
        va_btn:"Votar", va_voted:"Votado", va_wait:"Mañana", va_share:"Compartir",
        va_voted_text:"Tu voto por {name} ya cuenta. Regresa mañana para votar otra vez.",
@@ -1261,6 +1266,16 @@ class Component extends DCLogic {
       else if (q && SEED.some(v => (v.owner || v.logo) && slugify(v.handle || v.name) === q)) this.setState({ view:"vote", slug:q });
     } catch(e){}
   }
+  componentDidUpdate(pp, ps){
+    const s = this.state;
+    if (typeof window.gtag !== "function") return;
+    if (ps.view !== s.view || ps.slug !== s.slug) {
+      const path = "/" + s.view + (s.slug && (s.view === "vendor" || s.view === "vote") ? "/" + s.slug : "");
+      window.gtag("event", "page_view", { page_title: s.view + (s.slug ? " – " + s.slug : ""), page_location: location.origin + path, page_path: path, language: s.lang });
+    }
+    if (ps.cat !== s.cat) window.gtag("event", "select_category", { category: s.cat });
+    if (s.votedSlug && ps.votedSlug !== s.votedSlug) window.gtag("event", "vendor_vote", { vendor: s.votedSlug });
+  }
   componentWillUnmount(){ if (this._fit) window.removeEventListener("resize", this._fit); }
 
   nav(dir){
@@ -1341,6 +1356,7 @@ class Component extends DCLogic {
       ...v, slug: slugify(v.handle || v.name), fb: v.fb || FB[v.handle] || "", web: v.web || WEB[v.handle] || "", logo: v.logo || "", color: tint(catOf(v.cat).bg, .55),
       initials: initials(v.name), real: !!(v.owner || v.logo)
     }));
+    const newSlugs = rows.slice(-2).map(v => v.slug);
 
     const roleOf = k => k===i ? "center" : k===(i+n-1)%n ? "left" : k===(i+1)%n ? "right" : k===(i+2)%n ? "back" : "hidden";
 
@@ -1390,7 +1406,7 @@ class Component extends DCLogic {
       const cc = CATS.find(x => x.id === v.cat) || {};
       return {
         key:v.slug, at: v.handle ? "@"+v.handle : v.name, name: v.handle ? v.name : (v.sub || v.owner || ""), sells: es ? v.sells_es : v.sells,
-        cat: es ? cc.es : cc.en, color:v.color, initials:v.initials, logo:v.logo, hasLogo:!!v.logo,
+        cat: es ? cc.es : cc.en, color:v.color, initials:v.initials, logo:v.logo, hasLogo:!!v.logo, isNew: newSlugs.includes(v.slug), newLabel: es ? "¡Nuevo!" : "New!",
         onClick: e => { e.preventDefault(); this.setState({ view:"vendor", slug:v.slug }); window.scrollTo(0,0); }
       };
     });
